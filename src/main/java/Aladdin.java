@@ -11,7 +11,7 @@ public class Aladdin {
     /** Name of chatbot */
     private String name;
     /** Task List of chatbot */
-    private String[] taskList;
+    private Task[] taskList;
     /** Counts the number of tasks in taskList */
     private int taskCount;
 
@@ -22,7 +22,7 @@ public class Aladdin {
      */
     public Aladdin(String name) {
         this.name = name;
-        this.taskList = new String[100];
+        this.taskList = new Task[100];
         this.taskCount = 0;
     }
 
@@ -44,7 +44,7 @@ public class Aladdin {
         // If task list is not full
         if (this.taskCount < 100) {
             // Add task to taskList
-            this.taskList[this.taskCount] = taskName;
+            this.taskList[this.taskCount] = new Task(taskName);
             this.taskCount++;
 
             // Print task added
