@@ -1,7 +1,7 @@
 /**
- * Task Class
+ * Task Abstract Class
  */
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
@@ -34,9 +34,9 @@ public class Task {
     }
 
     /**
-     * Prints Task.
+     * Returns a string representation of a Task.
      *
-     * @return A string representing the task
+     * @return A string representing the task.
      */
     @Override
     public String toString() {

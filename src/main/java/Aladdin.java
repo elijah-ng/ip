@@ -37,18 +37,57 @@ public class Aladdin {
     /**
      * Adds the user's task to list.
      *
-     * @param taskName Task to be added to taskList.
+     * @param taskString Task to be added to taskList.
      * @return true if the task is successfully added. Otherwise, false.
      */
-    private boolean addTask(String taskName) {
+    private boolean addTask(String taskString) {
         // If task list is not full
         if (this.taskCount < 100) {
-            // Add task to taskList
-            this.taskList[this.taskCount] = new Task(taskName);
-            this.taskCount++;
+            // Split into max 2 substrings
+            String[] addTaskCommand = taskString.split(" ", 2);
 
-            // Print task added
-            System.out.println(LINE_SEP + "\n" + "Added: " + taskName + "\n" + LINE_SEP);
+            // If Todo task
+            if (addTaskCommand[0].equals("todo")) {
+                // Add todo task to taskList
+                this.taskList[this.taskCount] = new Todo(taskString);
+
+            } else if (addTaskCommand[0].equals("deadline")) {
+                // if Deadline task
+                String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
+                if (deadlineString.length != 2) {
+                    System.out.println("Invalid deadline format. Please specify /by {date/time}.");
+                    return false;
+                }
+                // Add deadline task to taskList
+                this.taskList[this.taskCount] = new Deadline(deadlineString[0], deadlineString[1]);
+
+            } else if (addTaskCommand[0].equals("event")) {
+                // if Event task
+                String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
+                if (eventString1.length != 2) {
+                    System.out.println("Invalid event format. Please specify /from {date/time}.");
+                    return false;
+                }
+                String[] eventString2 = eventString1[1].split(" /to ", 2);
+                if (eventString2.length != 2) {
+                    System.out.println("Invalid event format. Please specify /to {date/time}.");
+                    return false;
+                }
+                // Add Event task to taskList
+                this.taskList[this.taskCount] = new Event(eventString1[0], eventString2[0], eventString2[1]);
+
+            } else {
+                System.out.println("Invalid type of task! Please enter todo/deadline/event task, followed by a space.");
+                return false;
+            }
+
+            // Print the new task added
+            System.out.println(LINE_SEP);
+            System.out.println("Got it. Task has been Added: \n" + this.taskList[this.taskCount]);
+            this.taskCount++; // increment taskCount
+            System.out.println("Now you have " + this.taskCount + " task(s) in the list.");
+            System.out.println(LINE_SEP);
+            // Task succesfully added
             return true;
 
         } else {
@@ -122,14 +161,25 @@ public class Aladdin {
             // Print taskList
             if (userInput.equals("list")) {
                 chatbot.printTaskList();
-            } else if (userInput.startsWith("mark") || userInput.startsWith("unmark")) {
+
+            } else if (userInput.startsWith("mark")
+                    || userInput.startsWith("unmark")) {
                 String[] userCommand = userInput.split(" ");
                 int taskNumber = Integer.parseInt(userCommand[1]);
+
+                // Call method to change task status
                 chatbot.changeTaskStatus(userCommand[0], taskNumber);
-            } else {
-                // Add task to list
+
+            } else if (userInput.startsWith("todo")
+                    || userInput.startsWith("deadline")
+                    || userInput.startsWith("event")) {
+                // Add task to taskList
                 chatbot.addTask(userInput);
+
+            } else {
+                System.out.println("Invalid command. Please try again.");
             }
+
             // Get next user input
             userInput = sc.nextLine();
         }
