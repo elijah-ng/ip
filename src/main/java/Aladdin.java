@@ -46,13 +46,11 @@ public class Aladdin {
             // Split into max 2 substrings
             String[] addTaskCommand = taskString.split(" ", 2);
 
-            // If Todo task
             if (addTaskCommand[0].equals("todo")) {
                 // Add todo task to taskList
                 this.taskList[this.taskCount] = new Todo(taskString);
 
             } else if (addTaskCommand[0].equals("deadline")) {
-                // if Deadline task
                 String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
                 if (deadlineString.length != 2) {
                     System.out.println("Invalid deadline format. Please specify /by {date/time}.");
@@ -62,17 +60,19 @@ public class Aladdin {
                 this.taskList[this.taskCount] = new Deadline(deadlineString[0], deadlineString[1]);
 
             } else if (addTaskCommand[0].equals("event")) {
-                // if Event task
+
                 String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
                 if (eventString1.length != 2) {
                     System.out.println("Invalid event format. Please specify /from {date/time}.");
                     return false;
                 }
+
                 String[] eventString2 = eventString1[1].split(" /to ", 2);
                 if (eventString2.length != 2) {
                     System.out.println("Invalid event format. Please specify /to {date/time}.");
                     return false;
                 }
+
                 // Add Event task to taskList
                 this.taskList[this.taskCount] = new Event(eventString1[0], eventString2[0], eventString2[1]);
 
@@ -83,11 +83,11 @@ public class Aladdin {
 
             // Print the new task added
             System.out.println(LINE_SEP);
-            System.out.println("Got it. Task has been Added: \n" + this.taskList[this.taskCount]);
+            System.out.println("Got it. Task has been Added:\n" + this.taskList[this.taskCount]);
             this.taskCount++; // increment taskCount
             System.out.println("Now you have " + this.taskCount + " task(s) in the list.");
             System.out.println(LINE_SEP);
-            // Task succesfully added
+            // Task successfully added
             return true;
 
         } else {
@@ -155,6 +155,11 @@ public class Aladdin {
         System.out.println("What can I do for you?");
         System.out.println(LINE_SEP);
 
+        // Return if there is no user input.
+        if (!sc.hasNextLine()) {
+            return;
+        }
+
         // Get user input until user types command "bye"
         String userInput = sc.nextLine();
         while (!userInput.equals("bye")) {
@@ -164,9 +169,9 @@ public class Aladdin {
 
             } else if (userInput.startsWith("mark")
                     || userInput.startsWith("unmark")) {
+
                 String[] userCommand = userInput.split(" ");
                 int taskNumber = Integer.parseInt(userCommand[1]);
-
                 // Call method to change task status
                 chatbot.changeTaskStatus(userCommand[0], taskNumber);
 
@@ -180,6 +185,10 @@ public class Aladdin {
                 System.out.println("Invalid command. Please try again.");
             }
 
+            // Return if there is no user input.
+            if (!sc.hasNextLine()) {
+                return;
+            }
             // Get next user input
             userInput = sc.nextLine();
         }
