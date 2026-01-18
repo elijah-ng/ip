@@ -58,13 +58,43 @@ public class Aladdin {
     }
 
     /**
+     * Change Task Status and either Mark or Unmark the specified task as done or not done.
+     *
+     * @param userCommand Specifies if the task is to be mark or unmarked.
+     * @param taskNumber Specified task to mark or unmark.
+     */
+    private void changeTaskStatus(String userCommand, int taskNumber) {
+        System.out.println(LINE_SEP);
+
+        // If taskNumber is valid
+        if ((0 < taskNumber) && (taskNumber <= this.taskCount)) {
+            // Mark task as done
+            if (userCommand.equals("mark")) {
+                this.taskList[taskNumber - 1].setDone(true);
+                System.out.println("Great Job! I have marked the task as done:\n" + this.taskList[taskNumber - 1]);
+
+            } else if (userCommand.equals("unmark")) {
+                // Unmark task as not done
+                this.taskList[taskNumber - 1].setDone(false);
+                System.out.println("Ok, I have marked the task as not done yet:\n" + this.taskList[taskNumber - 1]);
+            }
+
+        } else {
+            System.out.println("Task " + taskNumber + " does not exist");
+        }
+
+        System.out.println(LINE_SEP);
+    }
+
+    /**
      * Print the taskList stored in the chatbot.
      */
     private void printTaskList() {
         System.out.println(LINE_SEP);
+        System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < this.taskCount; i++) {
-            int taskIndex = i + 1;
-            System.out.println(taskIndex + ". " + this.taskList[i]);
+            int taskNumber = i + 1;
+            System.out.println(taskNumber + ". " + this.taskList[i]);
         }
         System.out.println(LINE_SEP);
     }
@@ -92,8 +122,11 @@ public class Aladdin {
             // Print taskList
             if (userInput.equals("list")) {
                 chatbot.printTaskList();
-            }
-            else {
+            } else if (userInput.startsWith("mark") || userInput.startsWith("unmark")) {
+                String[] userCommand = userInput.split(" ");
+                int taskNumber = Integer.parseInt(userCommand[1]);
+                chatbot.changeTaskStatus(userCommand[0], taskNumber);
+            } else {
                 // Add task to list
                 chatbot.addTask(userInput);
             }
