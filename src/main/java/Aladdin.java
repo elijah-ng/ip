@@ -48,7 +48,7 @@ public class Aladdin {
 
             if (addTaskCommand[0].equals("todo")) {
                 // Add todo task to taskList
-                this.taskList[this.taskCount] = new Todo(taskString);
+                this.taskList[this.taskCount] = new Todo(addTaskCommand[1]);
 
             } else if (addTaskCommand[0].equals("deadline")) {
                 String[] deadlineString = addTaskCommand[1].split(" /by ", 2);

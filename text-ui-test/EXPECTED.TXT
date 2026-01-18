@@ -7,12 +7,12 @@ Here are the tasks in your list:
 ____________________________________________________________
 ____________________________________________________________
 Got it. Task has been Added:
-[T][ ] todo borrow book
+[T][ ] borrow book
 Now you have 1 task(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1. [T][ ] todo borrow book
+1. [T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
 Got it. Task has been Added:
@@ -31,7 +31,7 @@ Now you have 4 task(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1. [T][ ] todo borrow book
+1. [T][ ] borrow book
 2. [D][ ] return book (By: Sunday)
 3. [E][ ] project meeting (From: Mon 2pm. To: 4pm)
 4. [D][ ] do homework (By: no idea :-p)
@@ -46,7 +46,7 @@ Great Job! I have marked the task as done:
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1. [T][ ] todo borrow book
+1. [T][ ] borrow book
 2. [D][X] return book (By: Sunday)
 3. [E][ ] project meeting (From: Mon 2pm. To: 4pm)
 4. [D][X] do homework (By: no idea :-p)
@@ -61,7 +61,7 @@ Great Job! I have marked the task as done:
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1. [T][ ] todo borrow book
+1. [T][ ] borrow book
 2. [D][X] return book (By: Sunday)
 3. [E][X] project meeting (From: Mon 2pm. To: 4pm)
 4. [D][ ] do homework (By: no idea :-p)
