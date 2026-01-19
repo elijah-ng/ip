@@ -178,7 +178,6 @@ public class Aladdin {
 
                 } else if (userCommand[0].equals("mark")
                         || userCommand[0].equals("unmark")) {
-                    // TODO: catch not integer exception
                     int taskNumber = Integer.parseInt(userCommand[1]);
                     // Call method to change task status
                     chatbot.changeTaskStatus(userCommand[0], taskNumber);
