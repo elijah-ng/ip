@@ -67,5 +67,90 @@ Here are the tasks in your list:
 4. [D][ ] do homework (By: no idea :-p)
 ____________________________________________________________
 ____________________________________________________________
+AladdinException: Invalid command. Please try again.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid task! The description of a task cannot be empty/blank.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid task! The description of a task cannot be empty/blank.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid task! The description of a task cannot be empty/blank.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid deadline format. Please specify {description} /by {date/time}.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid deadline format. Please specify {description} /by {date/time}.
+____________________________________________________________
+____________________________________________________________
+Got it. Task has been Added:
+[D][ ] buy lunch (By: 2pm)
+Now you have 5 task(s) in the list.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid event format. Please specify {description} /from {date/time} /to {date/time}.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid event format. Please specify {description} /from {date/time} /to {date/time}.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid event format. Please specify {description} /from {date/time} /to {date/time}.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid event format. Please specify {description} /from {date/time} /to {date/time}.
+____________________________________________________________
+____________________________________________________________
+Got it. Task has been Added:
+[E][ ] carnival (From: 4pm. To: 6pm)
+Now you have 6 task(s) in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][ ] borrow book
+2. [D][X] return book (By: Sunday)
+3. [E][X] project meeting (From: Mon 2pm. To: 4pm)
+4. [D][ ] do homework (By: no idea :-p)
+5. [D][ ] buy lunch (By: 2pm)
+6. [E][ ] carnival (From: 4pm. To: 6pm)
+____________________________________________________________
+____________________________________________________________
+Great Job! I have marked the task as done:
+[D][X] buy lunch (By: 2pm)
+____________________________________________________________
+____________________________________________________________
+Great Job! I have marked the task as done:
+[E][X] carnival (From: 4pm. To: 6pm)
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][ ] borrow book
+2. [D][X] return book (By: Sunday)
+3. [E][X] project meeting (From: Mon 2pm. To: 4pm)
+4. [D][ ] do homework (By: no idea :-p)
+5. [D][X] buy lunch (By: 2pm)
+6. [E][X] carnival (From: 4pm. To: 6pm)
+____________________________________________________________
+____________________________________________________________
+Ok, I have marked the task as not done yet:
+[E][ ] carnival (From: 4pm. To: 6pm)
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][ ] borrow book
+2. [D][X] return book (By: Sunday)
+3. [E][X] project meeting (From: Mon 2pm. To: 4pm)
+4. [D][ ] do homework (By: no idea :-p)
+5. [D][X] buy lunch (By: 2pm)
+6. [E][ ] carnival (From: 4pm. To: 6pm)
+____________________________________________________________
+____________________________________________________________
+NumberFormatException: Please enter a valid number. For input string: "6 6"
+____________________________________________________________
+____________________________________________________________
+NumberFormatException: Please enter a valid number. For input string: "5 5"
+____________________________________________________________
+____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________

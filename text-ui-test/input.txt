@@ -11,4 +11,24 @@ list
 unmark 4
 mark 3
 list
+blah
+todo
+deadline
+event
+deadline buy lunch
+deadline /by 2pm
+deadline buy lunch /by 2pm
+event carnival
+event carnival /from 4pm
+event carnival /to 6pm
+event carnival /to 6pm /from 4pm
+event carnival /from 4pm /to 6pm
+list
+mark 5
+mark 6
+list
+unmark 6
+list
+mark 6 6
+unmark 5 5
 bye
