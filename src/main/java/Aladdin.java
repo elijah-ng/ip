@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -11,9 +12,7 @@ public class Aladdin {
     /** Name of chatbot */
     private String name;
     /** Task List of chatbot */
-    private Task[] taskList;
-    /** Counts the number of tasks in taskList */
-    private int taskCount;
+    private ArrayList<Task> taskList;
 
     /**
      * Constructor for Aladdin chatbot.
@@ -22,8 +21,7 @@ public class Aladdin {
      */
     public Aladdin(String name) {
         this.name = name;
-        this.taskList = new Task[100];
-        this.taskCount = 0;
+        this.taskList = new ArrayList<Task>();
     }
 
     /**
@@ -38,66 +36,57 @@ public class Aladdin {
      * Adds the user's task to list.
      *
      * @param taskString Task to be added to taskList.
-     * @return true if the task is successfully added. Otherwise, false.
      * @throws AladdinException if task format is invalid.
      */
-    private boolean addTask(String taskString) throws AladdinException {
-        // If task list is not full
-        if (this.taskCount < 100) {
-            // Split into max 2 substrings
-            String[] addTaskCommand = taskString.split(" ", 2);
+    private void addTask(String taskString) throws AladdinException {
+        // Split into max 2 substrings
+        String[] addTaskCommand = taskString.split(" ", 2);
 
-            // If there is no task description, addTaskCommand has length == 1.
-            // or if the description is blank (empty or contain only whitespaces)
-            if ((addTaskCommand.length != 2) || (addTaskCommand[1].isBlank())) {
-                throw new AladdinException("Invalid task! The description of a task cannot be empty/blank.");
-            }
-
-            if (addTaskCommand[0].equals("todo")) {
-                // Add todo task to taskList
-                this.taskList[this.taskCount] = new Todo(addTaskCommand[1]);
-
-            } else if (addTaskCommand[0].equals("deadline")) {
-                String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
-                if (deadlineString.length != 2) {
-                    throw new AladdinException("Invalid deadline format. " +
-                            "Please specify {description} /by {date/time}.");
-                }
-                // Add deadline task to taskList
-                this.taskList[this.taskCount] = new Deadline(deadlineString[0], deadlineString[1]);
-
-            } else if (addTaskCommand[0].equals("event")) {
-                String eventFormatError = "Invalid event format. " +
-                        "Please specify {description} /from {date/time} /to {date/time}.";
-
-                String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
-                if (eventString1.length != 2) {
-                    throw new AladdinException(eventFormatError);
-                }
-
-                String[] eventString2 = eventString1[1].split(" /to ", 2);
-                if (eventString2.length != 2) {
-                    throw new AladdinException(eventFormatError);
-                }
-
-                // Add Event task to taskList
-                this.taskList[this.taskCount] = new Event(eventString1[0], eventString2[0], eventString2[1]);
-
-            }
-
-            // Print the new task added
-            System.out.println(LINE_SEP);
-            System.out.println("Got it. Task has been Added:\n" + this.taskList[this.taskCount]);
-            this.taskCount++; // increment taskCount
-            System.out.println("Now you have " + this.taskCount + " task(s) in the list.");
-            System.out.println(LINE_SEP);
-            // Task successfully added
-            return true;
-
-        } else {
-            System.out.println("Task List is full! Maximum of 100 tasks.");
-            return false;
+        // If there is no task description, addTaskCommand has length == 1.
+        // or if the description is blank (empty or contain only whitespaces)
+        if ((addTaskCommand.length != 2) || (addTaskCommand[1].isBlank())) {
+            throw new AladdinException("Invalid task! The description of a task cannot be empty/blank.");
         }
+
+        if (addTaskCommand[0].equals("todo")) {
+            // Add todo task to taskList
+            this.taskList.add(new Todo(addTaskCommand[1]));
+
+        } else if (addTaskCommand[0].equals("deadline")) {
+            String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
+            if (deadlineString.length != 2) {
+                throw new AladdinException("Invalid deadline format. " +
+                        "Please specify {description} /by {date/time}.");
+            }
+            // Add deadline task to taskList
+            this.taskList.add(new Deadline(deadlineString[0], deadlineString[1]));
+
+        } else if (addTaskCommand[0].equals("event")) {
+            String eventFormatError = "Invalid event format. " +
+                    "Please specify {description} /from {date/time} /to {date/time}.";
+
+            String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
+            if (eventString1.length != 2) {
+                throw new AladdinException(eventFormatError);
+            }
+
+            String[] eventString2 = eventString1[1].split(" /to ", 2);
+            if (eventString2.length != 2) {
+                throw new AladdinException(eventFormatError);
+            }
+
+            // Add Event task to taskList
+            this.taskList.add(new Event(eventString1[0], eventString2[0], eventString2[1]));
+
+        }
+
+        // Print the new task added
+        System.out.println(LINE_SEP);
+        System.out.println("Got it. Task has been Added:\n"
+                + this.taskList.get(this.taskList.size() - 1));
+
+        System.out.println("Now you have " + this.taskList.size() + " task(s) in the list.");
+        System.out.println(LINE_SEP);
     }
 
     /**
@@ -110,19 +99,40 @@ public class Aladdin {
         System.out.println(LINE_SEP); // Beginning line separator
 
         // If taskNumber is valid
-        if ((0 < taskNumber) && (taskNumber <= this.taskCount)) {
+        if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
             // Mark task as done
             if (userCommand.equals("mark")) {
-                this.taskList[taskNumber - 1].setDone(true);
+                this.taskList.get(taskNumber - 1).setDone(true);
                 System.out.println("Great Job! I have marked the task as done:\n"
-                        + this.taskList[taskNumber - 1]);
+                        + this.taskList.get(taskNumber - 1));
 
             } else if (userCommand.equals("unmark")) {
                 // Unmark task as not done
-                this.taskList[taskNumber - 1].setDone(false);
+                this.taskList.get(taskNumber - 1).setDone(false);
                 System.out.println("Ok, I have marked the task as not done yet:\n"
-                        + this.taskList[taskNumber - 1]);
+                        + this.taskList.get(taskNumber - 1));
             }
+
+        } else {
+            System.out.println("Task " + taskNumber + " does not exist");
+        }
+
+        System.out.println(LINE_SEP); // Ending line separator
+    }
+
+    /**
+     * Delete a Task from list.
+     *
+     * @param taskNumber Specified task to delete.
+     */
+    private void deleteTask(int taskNumber) {
+        System.out.println(LINE_SEP); // Beginning line separator
+
+        // If taskNumber is valid
+        if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
+            Task deletedTask = this.taskList.remove(taskNumber - 1);
+            System.out.println("Noted. I have removed this task:\n" + deletedTask);
+            System.out.println("Now you have " + this.taskList.size() + " task(s) in the list.");
 
         } else {
             System.out.println("Task " + taskNumber + " does not exist");
@@ -137,9 +147,9 @@ public class Aladdin {
     private void printTaskList() {
         System.out.println(LINE_SEP);
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < this.taskCount; i++) {
+        for (int i = 0; i < this.taskList.size(); i++) {
             int taskNumber = i + 1;
-            System.out.println(taskNumber + ". " + this.taskList[i]);
+            System.out.println(taskNumber + ". " + this.taskList.get(i));
         }
         System.out.println(LINE_SEP);
     }
@@ -187,6 +197,11 @@ public class Aladdin {
                         || userCommand[0].equals("event")) {
                     // Add task to taskList
                     chatbot.addTask(userInput);
+
+                } else if (userCommand[0].equals("delete")) {
+                    int taskNumber = Integer.parseInt(userCommand[1]);
+                    // Call method to change task status
+                    chatbot.deleteTask(taskNumber);
 
                 } else {
                     throw new AladdinException("Invalid command. Please try again.");
