@@ -15,6 +15,11 @@ public class Aladdin {
     private ArrayList<Task> taskList;
 
     /**
+     * Enumeration for Commands
+     */
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
+
+    /**
      * Constructor for Aladdin chatbot.
      *
      * @param name name of the chatbot
@@ -48,11 +53,11 @@ public class Aladdin {
             throw new AladdinException("Invalid task! The description of a task cannot be empty/blank.");
         }
 
-        if (addTaskCommand[0].equals("todo")) {
+        if (addTaskCommand[0].equalsIgnoreCase("todo")) {
             // Add todo task to taskList
             this.taskList.add(new Todo(addTaskCommand[1]));
 
-        } else if (addTaskCommand[0].equals("deadline")) {
+        } else if (addTaskCommand[0].equalsIgnoreCase("deadline")) {
             String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
             if (deadlineString.length != 2) {
                 throw new AladdinException("Invalid deadline format. " +
@@ -61,7 +66,7 @@ public class Aladdin {
             // Add deadline task to taskList
             this.taskList.add(new Deadline(deadlineString[0], deadlineString[1]));
 
-        } else if (addTaskCommand[0].equals("event")) {
+        } else if (addTaskCommand[0].equalsIgnoreCase("event")) {
             String eventFormatError = "Invalid event format. " +
                     "Please specify {description} /from {date/time} /to {date/time}.";
 
@@ -101,12 +106,12 @@ public class Aladdin {
         // If taskNumber is valid
         if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
             // Mark task as done
-            if (userCommand.equals("mark")) {
+            if (userCommand.equalsIgnoreCase("mark")) {
                 this.taskList.get(taskNumber - 1).setDone(true);
                 System.out.println("Great Job! I have marked the task as done:\n"
                         + this.taskList.get(taskNumber - 1));
 
-            } else if (userCommand.equals("unmark")) {
+            } else if (userCommand.equalsIgnoreCase("unmark")) {
                 // Unmark task as not done
                 this.taskList.get(taskNumber - 1).setDone(false);
                 System.out.println("Ok, I have marked the task as not done yet:\n"
@@ -178,33 +183,39 @@ public class Aladdin {
 
         // Get user input until user types command "bye"
         String userInput = sc.nextLine();
-        while (!userInput.equals("bye")) {
+
+        while (!userInput.equalsIgnoreCase("bye")) {
             try {
-                String[] userCommand = userInput.split(" ", 2);
+                String[] userInputArray = userInput.split(" ", 2);
+                Command userCommand = Command.valueOf(userInputArray[0].toUpperCase());
+                // Initialise taskNumber for later use
+                int taskNumber = 0;
 
-                // Print taskList
-                if (userCommand[0].equals("list")) {
+                switch (userCommand) {
+                case LIST:
+                    // Print taskList
                     chatbot.printTaskList();
+                    break;
 
-                } else if (userCommand[0].equals("mark")
-                        || userCommand[0].equals("unmark")) {
-                    int taskNumber = Integer.parseInt(userCommand[1]);
+                case MARK:
+                case UNMARK:
+                    taskNumber = Integer.parseInt(userInputArray[1]);
                     // Call method to change task status
-                    chatbot.changeTaskStatus(userCommand[0], taskNumber);
+                    chatbot.changeTaskStatus(userInputArray[0], taskNumber);
+                    break;
 
-                } else if (userCommand[0].equals("todo")
-                        || userCommand[0].equals("deadline")
-                        || userCommand[0].equals("event")) {
+                case TODO:
+                case DEADLINE:
+                case EVENT:
                     // Add task to taskList
                     chatbot.addTask(userInput);
+                    break;
 
-                } else if (userCommand[0].equals("delete")) {
-                    int taskNumber = Integer.parseInt(userCommand[1]);
+                case DELETE:
+                    taskNumber = Integer.parseInt(userInputArray[1]);
                     // Call method to change task status
                     chatbot.deleteTask(taskNumber);
-
-                } else {
-                    throw new AladdinException("Invalid command. Please try again.");
+                    break;
                 }
 
             } catch (AladdinException e) {
@@ -215,6 +226,11 @@ public class Aladdin {
             } catch (NumberFormatException e) {
                 System.out.println(LINE_SEP);
                 System.out.println("NumberFormatException: Please enter a valid number. " + e.getMessage());
+                System.out.println(LINE_SEP);
+
+            } catch (IllegalArgumentException e) {
+                System.out.println(LINE_SEP);
+                System.out.println("Invalid command. Please try again.");
                 System.out.println(LINE_SEP);
 
             } finally {

@@ -67,7 +67,7 @@ Here are the tasks in your list:
 4. [D][ ] do homework (By: no idea :-p)
 ____________________________________________________________
 ____________________________________________________________
-AladdinException: Invalid command. Please try again.
+Invalid command. Please try again.
 ____________________________________________________________
 ____________________________________________________________
 AladdinException: Invalid task! The description of a task cannot be empty/blank.
