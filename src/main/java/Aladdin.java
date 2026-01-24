@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -33,7 +32,7 @@ public class Aladdin {
     /** Name of chatbot */
     private String name;
     /** Task List of chatbot */
-    private ArrayList<Task> taskList;
+    private TaskList taskList;
 
     /**
      * Enumeration for Commands
@@ -47,7 +46,7 @@ public class Aladdin {
      */
     public Aladdin(String name) {
         this.name = name;
-        this.taskList = new ArrayList<Task>();
+        this.taskList = new TaskList();
     }
 
     private void loadTasksFromFile() {
@@ -66,7 +65,7 @@ public class Aladdin {
                 Task newTask = parseTask(nextLineString);
 
                 // Add to taskList
-                this.taskList.add(newTask);
+                this.taskList.addTask(newTask);
             }
 
         } catch (FileNotFoundException e) {
@@ -110,6 +109,8 @@ public class Aladdin {
         // If task is marked done
         if (nextLineStringArray[1].equals("1")) {
             newTask.setDone(true);
+        } else {
+            newTask.setDone(false);
         }
 
         return newTask;
@@ -124,8 +125,9 @@ public class Aladdin {
             // Creates file if it does not exist, otherwise overwrite (delete/add tasks)
             FileWriter fw = new FileWriter(TASK_FILE_PATH);
 
-            for (Task task : this.taskList) {
-                fw.write(task.serialise() + System.lineSeparator());
+            for (int i = 0; i < this.taskList.getSize(); i++) {
+                Task currentTask = this.taskList.getTask(i);
+                fw.write(currentTask.serialise() + System.lineSeparator());
             }
 
             // Close FileWrite object to complete writing operation
@@ -162,9 +164,11 @@ public class Aladdin {
             throw new AladdinException("Invalid task! The description of a task cannot be empty/blank.");
         }
 
+        Task newTask = null;
+
         if (addTaskCommand[0].equalsIgnoreCase("todo")) {
             // Add todo task to taskList
-            this.taskList.add(new Todo(addTaskCommand[1]));
+            newTask = new Todo(addTaskCommand[1]);
 
         } else if (addTaskCommand[0].equalsIgnoreCase("deadline")) {
             String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
@@ -173,8 +177,8 @@ public class Aladdin {
                         + "Please specify {description} /by {date/time}.");
             }
             // Add deadline task to taskList
-            this.taskList.add(new Deadline(deadlineString[0],
-                    LocalDateTime.parse(deadlineString[1], DATE_TIME_STORE)));
+            newTask = new Deadline(deadlineString[0],
+                    LocalDateTime.parse(deadlineString[1], DATE_TIME_STORE));
 
         } else if (addTaskCommand[0].equalsIgnoreCase("event")) {
             String eventFormatError = "Invalid event format. "
@@ -193,45 +197,38 @@ public class Aladdin {
             }
 
             // Add Event task to taskList
-            this.taskList.add(new Event(eventString1[0],
+            newTask = new Event(eventString1[0],
                     LocalDateTime.parse(eventString2[0], DATE_TIME_STORE),
-                    LocalDateTime.parse(eventString2[1], DATE_TIME_STORE)));
-
+                    LocalDateTime.parse(eventString2[1], DATE_TIME_STORE));
         }
 
-        // Print the new task added
+        // Add the new task
+        this.taskList.addTask(newTask);
         System.out.println(LINE_SEP);
-        System.out.println("Got it. Task has been Added:\n"
-                + this.taskList.get(this.taskList.size() - 1));
-
-        System.out.println("Now you have " + this.taskList.size() + " task(s) in the list.");
+        System.out.println("Got it. Task has been Added:");
+        System.out.println(newTask);
+        System.out.println("Now you have " + this.taskList.getSize() + " task(s) in the list.");
         System.out.println(LINE_SEP);
     }
 
     /**
      * Change Task Status and either Mark or Unmark the specified task as done or not done.
      *
-     * @param userCommand Specifies if the task is to be mark or unmarked.
      * @param taskNumber Specified task to mark or unmark.
+     * @param isDone Specifies if task is done or not.
      */
-    private void changeTaskStatus(String userCommand, int taskNumber) {
+    private void markTaskStatus(int taskNumber, boolean isDone) {
         System.out.println(LINE_SEP); // Beginning line separator
 
-        // If taskNumber is valid
-        if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
+        Task modifiedTask = this.taskList.changeTaskStatus(taskNumber, isDone);
 
-            if (userCommand.equalsIgnoreCase("mark")) {
-                // Mark task as done
-                this.taskList.get(taskNumber - 1).setDone(true);
-                System.out.println("Great Job! I have marked the task as done:\n"
-                        + this.taskList.get(taskNumber - 1));
-
-            } else if (userCommand.equalsIgnoreCase("unmark")) {
-                // Unmark task as not done
-                this.taskList.get(taskNumber - 1).setDone(false);
-                System.out.println("Ok, I have marked the task as not done yet:\n"
-                        + this.taskList.get(taskNumber - 1));
+        if (modifiedTask != null) {
+            if (isDone) {
+                System.out.println("Great Job! I have marked the task as done:");
+            } else {
+                System.out.println("Ok, I have marked the task as not done yet:");
             }
+            System.out.println(modifiedTask);
 
         } else {
             System.out.println("Task " + taskNumber + " does not exist");
@@ -241,36 +238,33 @@ public class Aladdin {
     }
 
     /**
-     * Delete a Task from list.
+     * Delete a Task from list based on the task number.
      *
-     * @param taskNumber Specified task to delete.
+     * @param taskNumber Specified task to delete (starts from 1).
      */
     private void deleteTask(int taskNumber) {
-        System.out.println(LINE_SEP); // Beginning line separator
+        System.out.println(LINE_SEP); // Ending line separator
+        Task deletedTask = this.taskList.deleteTask(taskNumber);
 
-        // If taskNumber is valid
-        if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
-            Task deletedTask = this.taskList.remove(taskNumber - 1);
-            System.out.println("Noted. I have removed this task:\n" + deletedTask);
-            System.out.println("Now you have " + this.taskList.size() + " task(s) in the list.");
+        if (deletedTask != null) {
+            System.out.println("Noted. I have removed this task:");
+            System.out.println(deletedTask);
+            System.out.println("Now you have " + this.taskList.getSize() + " task(s) in the list.");
 
         } else {
             System.out.println("Task " + taskNumber + " does not exist");
         }
 
-        System.out.println(LINE_SEP); // Ending line separator
+        System.out.println(LINE_SEP); // Beginning line separator
     }
 
     /**
-     * Print the taskList stored in the chatbot.
+     * Prints the chatbot's taskList.
      */
     private void printTaskList() {
         System.out.println(LINE_SEP);
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < this.taskList.size(); i++) {
-            int taskNumber = i + 1;
-            System.out.println(taskNumber + ". " + this.taskList.get(i));
-        }
+        this.taskList.printTasks();
         System.out.println(LINE_SEP);
     }
 
@@ -314,10 +308,18 @@ public class Aladdin {
                     break;
 
                 case MARK:
+                    taskNumber = Integer.parseInt(userInputArray[1]);
+                    // Call method to mark task
+                    chatbot.markTaskStatus(taskNumber, true);
+
+                    // Save updated taskList to file
+                    chatbot.saveTasksToFile();
+                    break;
+
                 case UNMARK:
                     taskNumber = Integer.parseInt(userInputArray[1]);
-                    // Call method to change task status
-                    chatbot.changeTaskStatus(userInputArray[0], taskNumber);
+                    // Call method to unmark task
+                    chatbot.markTaskStatus(taskNumber, false);
 
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
@@ -335,7 +337,7 @@ public class Aladdin {
 
                 case DELETE:
                     taskNumber = Integer.parseInt(userInputArray[1]);
-                    // Call method to change task status
+                    // Call method to delete task
                     chatbot.deleteTask(taskNumber);
 
                     // Save updated taskList to file
