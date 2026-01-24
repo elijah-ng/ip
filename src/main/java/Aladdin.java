@@ -4,6 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,6 +16,15 @@ import java.util.Scanner;
  * @author Elijah Ng Ding Jie
  */
 public class Aladdin {
+    /** 24-Hour DateTime Format for Tasks Stored by Aladdin */
+    public static final DateTimeFormatter DATE_TIME_STORE =
+            DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
+
+    /** 12-Hour DateTime Format for Display by Aladdin */
+    public static final DateTimeFormatter DATE_TIME_DISPLAY =
+            DateTimeFormatter.ofPattern("d MMM yyyy h:mm a");
+
+
     /** Line Separator used by Aladdin chatbot */
     private static final String LINE_SEP = "_".repeat(60);
     /** File Path to Store Tasks */
@@ -65,7 +77,11 @@ public class Aladdin {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("There was an error loading tasks from the file.");
             System.out.println("Please check data formatting in " + TASK_FILE_PATH);
+
+        } catch (DateTimeParseException e) {
+            System.out.println("DateTimeParseException: " + e.getMessage());
         }
+
         System.out.println(LINE_SEP);
     }
 
@@ -77,12 +93,14 @@ public class Aladdin {
 
         if (nextLineStringArray[0].equals("D")) {
             // Create Deadline task
-            newTask = new Deadline(nextLineStringArray[2], nextLineStringArray[3]);
+            newTask = new Deadline(nextLineStringArray[2],
+                    LocalDateTime.parse(nextLineStringArray[3], DATE_TIME_STORE));
 
         } else if (nextLineStringArray[0].equals("E")) {
             // Create Event task
             newTask = new Event(nextLineStringArray[2],
-                    nextLineStringArray[3], nextLineStringArray[4]);
+                    LocalDateTime.parse(nextLineStringArray[3], DATE_TIME_STORE),
+                    LocalDateTime.parse(nextLineStringArray[4], DATE_TIME_STORE));
 
         } else { // nextLineStringArray[0].equals("T")
             // Create Todo task
@@ -114,8 +132,8 @@ public class Aladdin {
             fw.close();
 
         } catch (IOException e) {
-            System.out.println("Error creating/opening " + TASK_FILE_PATH +
-                    " file to save tasks: " + e.getMessage());
+            System.out.println("Error creating/opening " + TASK_FILE_PATH
+                    + " file to save tasks: " + e.getMessage());
         }
     }
 
@@ -151,28 +169,33 @@ public class Aladdin {
         } else if (addTaskCommand[0].equalsIgnoreCase("deadline")) {
             String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
             if (deadlineString.length != 2) {
-                throw new AladdinException("Invalid deadline format. " +
-                        "Please specify {description} /by {date/time}.");
+                throw new AladdinException("Invalid deadline format. "
+                        + "Please specify {description} /by {date/time}.");
             }
             // Add deadline task to taskList
-            this.taskList.add(new Deadline(deadlineString[0], deadlineString[1]));
+            this.taskList.add(new Deadline(deadlineString[0],
+                    LocalDateTime.parse(deadlineString[1], DATE_TIME_STORE)));
 
         } else if (addTaskCommand[0].equalsIgnoreCase("event")) {
-            String eventFormatError = "Invalid event format. " +
-                    "Please specify {description} /from {date/time} /to {date/time}.";
+            String eventFormatError = "Invalid event format. "
+                    + "Please specify {description} /from {date/time} /to {date/time}.";
 
+            // Split string by "/from"
             String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
             if (eventString1.length != 2) {
                 throw new AladdinException(eventFormatError);
             }
 
+            // Split string by "/to"
             String[] eventString2 = eventString1[1].split(" /to ", 2);
             if (eventString2.length != 2) {
                 throw new AladdinException(eventFormatError);
             }
 
             // Add Event task to taskList
-            this.taskList.add(new Event(eventString1[0], eventString2[0], eventString2[1]));
+            this.taskList.add(new Event(eventString1[0],
+                    LocalDateTime.parse(eventString2[0], DATE_TIME_STORE),
+                    LocalDateTime.parse(eventString2[1], DATE_TIME_STORE)));
 
         }
 
@@ -196,8 +219,9 @@ public class Aladdin {
 
         // If taskNumber is valid
         if ((0 < taskNumber) && (taskNumber <= this.taskList.size())) {
-            // Mark task as done
+
             if (userCommand.equalsIgnoreCase("mark")) {
+                // Mark task as done
                 this.taskList.get(taskNumber - 1).setDone(true);
                 System.out.println("Great Job! I have marked the task as done:\n"
                         + this.taskList.get(taskNumber - 1));
@@ -327,6 +351,12 @@ public class Aladdin {
             } catch (NumberFormatException e) {
                 System.out.println(LINE_SEP);
                 System.out.println("NumberFormatException: Please enter a valid number. " + e.getMessage());
+                System.out.println(LINE_SEP);
+
+            } catch (DateTimeParseException e) {
+                System.out.println(LINE_SEP);
+                System.out.println("DateTimeParseException: Please enter in d-M-yyyy HHmm format.");
+                System.out.println(e.getMessage());
                 System.out.println(LINE_SEP);
 
             } catch (IllegalArgumentException e) {
