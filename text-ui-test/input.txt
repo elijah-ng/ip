@@ -1,9 +1,9 @@
 list
 todo borrow book
 list
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
-deadline do homework /by no idea :-p
+deadline return book /by 1-1-2026 1600
+event project meeting /from 2-1-2026 1400 /to 2-1-2026 1600
+deadline do homework /by 5-1-2026 1600
 list
 mark 2
 mark 4
@@ -16,13 +16,16 @@ todo
 deadline
 event
 deadline buy lunch
-deadline /by 2pm
-deadline buy lunch /by 2pm
+deadline /by 1-1-2026 1200
+deadline buy lunch /by 1-1 random
+deadline buy lunch /by 1-1-2026 1200
 event carnival
-event carnival /from 4pm
-event carnival /to 6pm
-event carnival /to 6pm /from 4pm
-event carnival /from 4pm /to 6pm
+event carnival /from 6-1-2026 1600
+event carnival /to 6-1-2026 1800
+event carnival /to 6-1-2026 1800 /from 6-1-2026 1600
+event carnival /from 6-1-2026 9000 /to 6-1-2026 1800
+event carnival /from 6-1-2026 1600 /to random
+event carnival /from 6-1-2026 1600 /to 6-1-2026 1800
 list
 mark 5
 mark 6
