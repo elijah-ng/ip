@@ -1,10 +1,14 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Deadline Class
  * Tasks that need to be done before a specific date/time.
  */
 public class Deadline extends Task {
 
-    protected String by;
+    protected LocalDateTime by;
 
     /**
      * Constructor for Deadline.
@@ -12,7 +16,7 @@ public class Deadline extends Task {
      * @param description description of deadline task.
      * @param by date/time for deadline.
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, LocalDateTime by) {
         super(description);
         this.by = by;
     }
@@ -24,7 +28,8 @@ public class Deadline extends Task {
      */
     @Override
     public String serialise() {
-        return "D|" + (this.isDone ? "1" : "0") + "|" + this.description + "|" + this.by;
+        return "D|" + (this.isDone ? "1" : "0") + "|"
+                + this.description + "|" + this.by.format(Aladdin.DATE_TIME_STORE);
     }
 
     /**
@@ -34,6 +39,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (By: " + this.by + ")";
+        return "[D]" + super.toString() + " (By: "
+                + this.by.format(Aladdin.DATE_TIME_DISPLAY) + ")";
     }
 }
