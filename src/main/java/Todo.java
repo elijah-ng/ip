@@ -14,6 +14,16 @@ public class Todo extends Task {
     }
 
     /**
+     * Returns a string representation of a serialised Todo task for storage.
+     *
+     * @return A string representing the serialised Todo task.
+     */
+    @Override
+    public String serialise() {
+        return "T|" + (this.isDone ? "1" : "0") + "|" + this.description;
+    }
+
+    /**
      * Returns a string representation of a Todo.
      *
      * @return A string representing the Todo.

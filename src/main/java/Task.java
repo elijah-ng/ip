@@ -30,8 +30,15 @@ public abstract class Task {
      * @return X if task is done. Otherwise, empty string if not done.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (this.isDone ? "X" : " "); // mark done task with X
     }
+
+    /**
+     * Returns a string representation of a serialised Task for storage.
+     *
+     * @return A string representing the serialised task.
+     */
+    public abstract String serialise();
 
     /**
      * Returns a string representation of a Task.
@@ -40,6 +47,6 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " + description;
+        return "[" + this.getStatusIcon() + "] " + this.description;
     }
 }
