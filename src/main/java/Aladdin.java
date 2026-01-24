@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,6 +29,61 @@ public class Aladdin {
     public Aladdin(String name) {
         this.name = name;
         this.taskList = new ArrayList<Task>();
+    }
+
+    private void loadTasksFromFile() {
+        System.out.println(LINE_SEP);
+
+        File f = new File("data/aladdin.txt");
+        try {
+            Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
+            System.out.println("File containing saved tasks found!");
+            System.out.println("Loading tasks from: " + f.getAbsolutePath());
+
+            // while file contains non-whitespace character
+            while (s.hasNext()) {
+                // Store next line
+                String nextLineString = s.nextLine();
+                Task newTask = parseTask(nextLineString);
+
+                // Add to taskList
+                this.taskList.add(newTask);
+            }
+
+        } catch (FileNotFoundException e) {
+            // If file does not exist, no task to load
+            System.out.println("Note: There was no saved tasks file found from a previous session.");
+            System.out.println("You may safely ignore this if this is your first time using Aladdin.");
+        }
+        System.out.println(LINE_SEP);
+    }
+
+    // Helper Method to Parse and Deserialize Tasks
+    private static Task parseTask(String nextLineString) {
+        String[] nextLineStringArray = nextLineString.split("\\|");
+
+        Task newTask = null;
+
+        if (nextLineStringArray[0].equals("D")) {
+            // Create Deadline task
+            newTask = new Deadline(nextLineStringArray[2], nextLineStringArray[3]);
+
+        } else if (nextLineStringArray[0].equals("E")) {
+            // Create Event task
+            newTask = new Event(nextLineStringArray[2],
+                    nextLineStringArray[3], nextLineStringArray[4]);
+
+        } else { // nextLineStringArray[0].equals("T")
+            // Create Todo task
+            newTask = new Todo(nextLineStringArray[2]);
+        }
+
+        // If task is marked done
+        if (nextLineStringArray[1].equals("1")) {
+            newTask.setDone(true);
+        }
+
+        return newTask;
     }
 
     /**
@@ -169,6 +226,7 @@ public class Aladdin {
         Scanner sc = new Scanner(System.in);
         // Instantiate Aladdin chatbot
         Aladdin chatbot = new Aladdin("Aladdin");
+        chatbot.loadTasksFromFile();
 
         // Print greeting message
         System.out.println(LINE_SEP);
