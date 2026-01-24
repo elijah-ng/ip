@@ -1,5 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,6 +15,9 @@ import java.util.Scanner;
 public class Aladdin {
     /** Line Separator used by Aladdin chatbot */
     private static final String LINE_SEP = "_".repeat(60);
+    /** File Path to Store Tasks */
+    private static final String TASK_FILE_PATH = "data/aladdin.txt";
+
     /** Name of chatbot */
     private String name;
     /** Task List of chatbot */
@@ -34,7 +41,7 @@ public class Aladdin {
     private void loadTasksFromFile() {
         System.out.println(LINE_SEP);
 
-        File f = new File("data/aladdin.txt");
+        File f = new File(TASK_FILE_PATH);
         try {
             Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
             System.out.println("File containing saved tasks found!");
@@ -54,6 +61,10 @@ public class Aladdin {
             // If file does not exist, no task to load
             System.out.println("Note: There was no saved tasks file found from a previous session.");
             System.out.println("You may safely ignore this if this is your first time using Aladdin.");
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("There was an error loading tasks from the file.");
+            System.out.println("Please check data formatting in " + TASK_FILE_PATH);
         }
         System.out.println(LINE_SEP);
     }
@@ -86,8 +97,31 @@ public class Aladdin {
         return newTask;
     }
 
+    // Saves tasks to file whenever task list changes.
+    // If no tasks in taskList, create an empty file.
+    private void saveTasksToFile() {
+        try {
+            // Creates directory if it does not exist
+            Files.createDirectories(Paths.get("data"));
+            // Creates file if it does not exist, otherwise overwrite (delete/add tasks)
+            FileWriter fw = new FileWriter(TASK_FILE_PATH);
+
+            for (Task task : this.taskList) {
+                fw.write(task.serialise() + System.lineSeparator());
+            }
+
+            // Close FileWrite object to complete writing operation
+            fw.close();
+
+        } catch (IOException e) {
+            System.out.println("Error creating/opening " + TASK_FILE_PATH +
+                    " file to save tasks: " + e.getMessage());
+        }
+    }
+
     /**
      * Getter for name
+     *
      * @return name of chatbot
      */
     public String getName() {
@@ -260,6 +294,9 @@ public class Aladdin {
                     taskNumber = Integer.parseInt(userInputArray[1]);
                     // Call method to change task status
                     chatbot.changeTaskStatus(userInputArray[0], taskNumber);
+
+                    // Save updated taskList to file
+                    chatbot.saveTasksToFile();
                     break;
 
                 case TODO:
@@ -267,12 +304,18 @@ public class Aladdin {
                 case EVENT:
                     // Add task to taskList
                     chatbot.addTask(userInput);
+
+                    // Save updated taskList to file
+                    chatbot.saveTasksToFile();
                     break;
 
                 case DELETE:
                     taskNumber = Integer.parseInt(userInputArray[1]);
                     // Call method to change task status
                     chatbot.deleteTask(taskNumber);
+
+                    // Save updated taskList to file
+                    chatbot.saveTasksToFile();
                     break;
                 }
 

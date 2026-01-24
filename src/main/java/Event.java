@@ -20,6 +20,16 @@ public class Event extends Task {
     }
 
     /**
+     * Returns a string representation of a serialised Event task for storage.
+     *
+     * @return A string representing the serialised Event task.
+     */
+    @Override
+    public String serialise() {
+        return "E|" + (this.isDone ? "1" : "0") + "|" + this.description + "|" + this.from + "|" + this.to;
+    }
+
+    /**
      * Returns a string representation of an Event.
      *
      * @return A string representing the Event.

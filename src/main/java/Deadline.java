@@ -18,6 +18,16 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns a string representation of a serialised Deadline task for storage.
+     *
+     * @return A string representing the serialised Deadline task.
+     */
+    @Override
+    public String serialise() {
+        return "D|" + (this.isDone ? "1" : "0") + "|" + this.description + "|" + this.by;
+    }
+
+    /**
      * Returns a string representation of a Deadline task.
      *
      * @return A string representing the Deadline task.
