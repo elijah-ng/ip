@@ -1,3 +1,5 @@
+package aladdin;
+
 /**
  * Task Abstract Class
  */

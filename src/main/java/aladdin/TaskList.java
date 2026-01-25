@@ -1,3 +1,5 @@
+package aladdin;
+
 import java.util.ArrayList;
 
 /**

@@ -1,3 +1,5 @@
+package aladdin;
+
 /**
  * AladdinException class
  * Represent checked exceptions specific to Aladdin.
