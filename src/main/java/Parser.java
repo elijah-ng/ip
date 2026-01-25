@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+// Solution below inspired by AB2. https://github.com/se-edu/addressbook-level2
 /**
  * Represents a Parser to make sense of user commands.
  */
@@ -9,8 +10,7 @@ public class Parser {
     /**
      * Enumeration for Commands
      */
-    public enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
-
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
 
     /**
      *

@@ -29,9 +29,6 @@ public class Aladdin {
     /** Task List of chatbot */
     private TaskList taskList;
 
-    private Parser parser;
-
-
     /**
      * Constructor for Aladdin chatbot.
      *
@@ -41,7 +38,6 @@ public class Aladdin {
         this.name = name;
         this.taskList = new TaskList();
         this.storage = new Storage(TASK_FILE_PATH);
-        this.parser = new Parser();
     }
 
     private void loadTasksFromFile() {
@@ -191,7 +187,7 @@ public class Aladdin {
 
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
-                String[] formattedCommand = chatbot.parser.parseUserCommand(userInput);
+                String[] formattedCommand = Parser.parseUserCommand(userInput);
 
                 switch (formattedCommand[0]) {
                 case "LIST":
