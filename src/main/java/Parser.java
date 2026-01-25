@@ -202,9 +202,14 @@ public class Parser {
 
         try {
             LocalDateTime fromDate = LocalDateTime.parse(commandDescriptionArray2[0], Aladdin.DATE_TIME_STORE);
-            formattedEventCommand[2] = fromDate.format(Aladdin.DATE_TIME_STORE);
-
             LocalDateTime toDate = LocalDateTime.parse(commandDescriptionArray2[1], Aladdin.DATE_TIME_STORE);
+
+            // If fromDate is not before toDate (fromDate equal or after toDate)
+            if (!fromDate.isBefore(toDate)) {
+                throw new AladdinException("Event 'from' must be before 'to' Date/Time.");
+            }
+
+            formattedEventCommand[2] = fromDate.format(Aladdin.DATE_TIME_STORE);
             formattedEventCommand[3] = toDate.format(Aladdin.DATE_TIME_STORE);
 
         } catch (DateTimeParseException e) {

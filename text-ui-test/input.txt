@@ -49,5 +49,7 @@ deadline hel|o /by 8-8-2028 0800
 event hel|o /from 1-1-2026 0900 /to 1-1-2026 2359
 event hello /from 1-1-2026 0100 /to 1-1-2026 000
 event hello /from 1-1-2026 0100 /to 1-1-2026 0000
+event hello /from 1-1-2026 0000 /to 1-1-2026 0000
+event hello /from 1-1-2026 0000 /to 1-1-2026 0001
 LIST
 bye
