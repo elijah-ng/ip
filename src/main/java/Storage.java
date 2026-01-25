@@ -1,4 +1,7 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,7 +44,7 @@ public class Storage {
                 Task newTask = Storage.deserialiseTask(nextLineString);
 
                 // Add to taskList
-                taskList.addTask(newTask);
+                taskList.addToTaskList(newTask);
             }
 
         } catch (FileNotFoundException e) {
@@ -85,7 +88,8 @@ public class Storage {
         // If task is marked done
         if (nextLineStringArray[1].equals("1")) {
             newTask.setDone(true);
-        } else {
+
+        } else { // task is not done
             newTask.setDone(false);
         }
 

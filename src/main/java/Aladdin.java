@@ -1,6 +1,5 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -30,10 +29,8 @@ public class Aladdin {
     /** Task List of chatbot */
     private TaskList taskList;
 
-    /**
-     * Enumeration for Commands
-     */
-    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
+    private Parser parser;
+
 
     /**
      * Constructor for Aladdin chatbot.
@@ -44,6 +41,7 @@ public class Aladdin {
         this.name = name;
         this.taskList = new TaskList();
         this.storage = new Storage(TASK_FILE_PATH);
+        this.parser = new Parser();
     }
 
     private void loadTasksFromFile() {
@@ -72,59 +70,35 @@ public class Aladdin {
     /**
      * Adds the user's task to list.
      *
-     * @param taskString Task to be added to taskList.
-     * @throws AladdinException if task format is invalid.
+     * @param formattedTask Array of substrings of correctly formatted task properties.
+     * @throws AladdinException if task type is invalid.
      */
-    private void addTask(String taskString) throws AladdinException {
-        // Split into max 2 substrings
-        String[] addTaskCommand = taskString.split(" ", 2);
-
-        // If there is no task description, addTaskCommand has length == 1.
-        // or if the description is blank (empty or contain only whitespaces)
-        if ((addTaskCommand.length != 2) || (addTaskCommand[1].isBlank())) {
-            throw new AladdinException("Invalid task! The description of a task cannot be empty/blank.");
-        }
-
+    private void addTask(String[] formattedTask) throws AladdinException {
+        String taskType = formattedTask[0];
         Task newTask = null;
 
-        if (addTaskCommand[0].equalsIgnoreCase("todo")) {
+        if (taskType.equals("TODO")) {
             // Add todo task to taskList
-            newTask = new Todo(addTaskCommand[1]);
+            newTask = new Todo(formattedTask[1]);
 
-        } else if (addTaskCommand[0].equalsIgnoreCase("deadline")) {
-            String[] deadlineString = addTaskCommand[1].split(" /by ", 2);
-            if (deadlineString.length != 2) {
-                throw new AladdinException("Invalid deadline format. "
-                        + "Please specify {description} /by {date/time}.");
-            }
+        } else if (taskType.equals("DEADLINE")) {
             // Add deadline task to taskList
-            newTask = new Deadline(deadlineString[0],
-                    LocalDateTime.parse(deadlineString[1], DATE_TIME_STORE));
+            newTask = new Deadline(formattedTask[1],
+                    LocalDateTime.parse(formattedTask[2], DATE_TIME_STORE));
 
-        } else if (addTaskCommand[0].equalsIgnoreCase("event")) {
-            String eventFormatError = "Invalid event format. "
-                    + "Please specify {description} /from {date/time} /to {date/time}.";
-
-            // Split string by "/from"
-            String[] eventString1 = addTaskCommand[1].split(" /from ", 2);
-            if (eventString1.length != 2) {
-                throw new AladdinException(eventFormatError);
-            }
-
-            // Split string by "/to"
-            String[] eventString2 = eventString1[1].split(" /to ", 2);
-            if (eventString2.length != 2) {
-                throw new AladdinException(eventFormatError);
-            }
-
+        } else if (taskType.equals("EVENT")) {
             // Add Event task to taskList
-            newTask = new Event(eventString1[0],
-                    LocalDateTime.parse(eventString2[0], DATE_TIME_STORE),
-                    LocalDateTime.parse(eventString2[1], DATE_TIME_STORE));
+            newTask = new Event(formattedTask[1],
+                    LocalDateTime.parse(formattedTask[2], DATE_TIME_STORE),
+                    LocalDateTime.parse(formattedTask[3], DATE_TIME_STORE));
+
+        } else {
+            throw new AladdinException("Invalid task type: " + taskType);
         }
 
         // Add the new task
-        this.taskList.addTask(newTask);
+        this.taskList.addToTaskList(newTask);
+
         System.out.println(LINE_SEP);
         System.out.println("Got it. Task has been Added:");
         System.out.println(newTask);
@@ -217,49 +191,43 @@ public class Aladdin {
 
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
-                String[] userInputArray = userInput.split(" ", 2);
-                Command userCommand = Command.valueOf(userInputArray[0].toUpperCase());
-                // Initialise taskNumber for later use
-                int taskNumber = 0;
+                String[] formattedCommand = chatbot.parser.parseUserCommand(userInput);
 
-                switch (userCommand) {
-                case LIST:
+                switch (formattedCommand[0]) {
+                case "LIST":
                     // Print taskList
                     chatbot.printTaskList();
                     break;
 
-                case MARK:
-                    taskNumber = Integer.parseInt(userInputArray[1]);
+                case "MARK":
                     // Call method to mark task
-                    chatbot.markTaskStatus(taskNumber, true);
+                    chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
 
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
 
-                case UNMARK:
-                    taskNumber = Integer.parseInt(userInputArray[1]);
+                case "UNMARK":
                     // Call method to unmark task
-                    chatbot.markTaskStatus(taskNumber, false);
+                    chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
 
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
 
-                case TODO:
-                case DEADLINE:
-                case EVENT:
+                case "TODO":
+                case "DEADLINE":
+                case "EVENT":
                     // Add task to taskList
-                    chatbot.addTask(userInput);
+                    chatbot.addTask(formattedCommand);
 
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
 
-                case DELETE:
-                    taskNumber = Integer.parseInt(userInputArray[1]);
+                case "DELETE":
                     // Call method to delete task
-                    chatbot.deleteTask(taskNumber);
+                    chatbot.deleteTask(Integer.parseInt(formattedCommand[1]));
 
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
@@ -269,22 +237,6 @@ public class Aladdin {
             } catch (AladdinException e) {
                 System.out.println(LINE_SEP);
                 System.out.println("AladdinException: " + e.getMessage());
-                System.out.println(LINE_SEP);
-
-            } catch (NumberFormatException e) {
-                System.out.println(LINE_SEP);
-                System.out.println("NumberFormatException: Please enter a valid number. " + e.getMessage());
-                System.out.println(LINE_SEP);
-
-            } catch (DateTimeParseException e) {
-                System.out.println(LINE_SEP);
-                System.out.println("DateTimeParseException: Please enter in d-M-yyyy HHmm format.");
-                System.out.println(e.getMessage());
-                System.out.println(LINE_SEP);
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(LINE_SEP);
-                System.out.println("Invalid command. Please try again.");
                 System.out.println(LINE_SEP);
 
             } finally {

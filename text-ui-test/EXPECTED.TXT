@@ -71,25 +71,25 @@ Here are the tasks in your list:
 4. [D][ ] do homework (By: 5 Jan 2026 4:00 pm)
 ____________________________________________________________
 ____________________________________________________________
-Invalid command. Please try again.
+AladdinException: Invalid command.
 ____________________________________________________________
 ____________________________________________________________
-AladdinException: Invalid task! The description of a task cannot be empty/blank.
+AladdinException: Invalid command. Please enter full command.
 ____________________________________________________________
 ____________________________________________________________
-AladdinException: Invalid task! The description of a task cannot be empty/blank.
+AladdinException: Invalid command. Please enter full command.
 ____________________________________________________________
 ____________________________________________________________
-AladdinException: Invalid task! The description of a task cannot be empty/blank.
-____________________________________________________________
-____________________________________________________________
-AladdinException: Invalid deadline format. Please specify {description} /by {date/time}.
+AladdinException: Invalid command. Please enter full command.
 ____________________________________________________________
 ____________________________________________________________
 AladdinException: Invalid deadline format. Please specify {description} /by {date/time}.
 ____________________________________________________________
 ____________________________________________________________
-DateTimeParseException: Please enter in d-M-yyyy HHmm format.
+AladdinException: Invalid deadline format. Please specify {description} /by {date/time}.
+____________________________________________________________
+____________________________________________________________
+AladdinException: Invalid Deadline 'by' Date. Please enter in d-M-yyyy HHmm format.
 Text '1-1 random' could not be parsed at index 3
 ____________________________________________________________
 ____________________________________________________________
@@ -110,11 +110,11 @@ ____________________________________________________________
 AladdinException: Invalid event format. Please specify {description} /from {date/time} /to {date/time}.
 ____________________________________________________________
 ____________________________________________________________
-DateTimeParseException: Please enter in d-M-yyyy HHmm format.
+AladdinException: Invalid Event 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format.
 Text '6-1-2026 9000' could not be parsed: Invalid value for HourOfDay (valid values 0 - 23): 90
 ____________________________________________________________
 ____________________________________________________________
-DateTimeParseException: Please enter in d-M-yyyy HHmm format.
+AladdinException: Invalid Event 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format.
 Text 'random' could not be parsed at index 0
 ____________________________________________________________
 ____________________________________________________________
@@ -162,10 +162,10 @@ Here are the tasks in your list:
 6. [E][ ] carnival (From: 6 Jan 2026 4:00 pm. To: 6 Jan 2026 6:00 pm)
 ____________________________________________________________
 ____________________________________________________________
-NumberFormatException: Please enter a valid number. For input string: "6 6"
+AladdinException: Task Number must be integer: For input string: "6 6"
 ____________________________________________________________
 ____________________________________________________________
-NumberFormatException: Please enter a valid number. For input string: "5 5"
+AladdinException: Task Number must be integer: For input string: "5 5"
 ____________________________________________________________
 ____________________________________________________________
 Task 0 does not exist
@@ -195,10 +195,10 @@ ____________________________________________________________
 Task 4 does not exist
 ____________________________________________________________
 ____________________________________________________________
-NumberFormatException: Please enter a valid number. For input string: "1 1"
+AladdinException: Task Number must be integer: For input string: "1 1"
 ____________________________________________________________
 ____________________________________________________________
-NumberFormatException: Please enter a valid number. For input string: "5 5"
+AladdinException: Task Number must be integer: For input string: "5 5"
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:

@@ -20,7 +20,7 @@ public class TaskList {
         return this.tasks.size();
     }
 
-    public void addTask(Task t) {
+    public void addToTaskList(Task t) {
         this.tasks.add(t);
     }
 
