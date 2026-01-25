@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
@@ -37,7 +38,7 @@ public class Storage {
             while (s.hasNext()) {
                 // Parse next line
                 String nextLineString = s.nextLine();
-                Task newTask = Aladdin.parseTask(nextLineString);
+                Task newTask = Storage.deserialiseTask(nextLineString);
 
                 // Add to taskList
                 taskList.addTask(newTask);
@@ -56,6 +57,39 @@ public class Storage {
             System.out.println("DateTimeParseException: " + e.getMessage());
         }
 
+    }
+
+    // Helper Method to Deserialize Tasks
+    // throws ArrayIndexOutOfBoundsException if storage file corrupted.
+    private static Task deserialiseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
+        String[] nextLineStringArray = nextLineString.split("\\|");
+
+        Task newTask = null;
+
+        if (nextLineStringArray[0].equals("D")) {
+            // Create Deadline task
+            newTask = new Deadline(nextLineStringArray[2],
+                    LocalDateTime.parse(nextLineStringArray[3], Aladdin.DATE_TIME_STORE));
+
+        } else if (nextLineStringArray[0].equals("E")) {
+            // Create Event task
+            newTask = new Event(nextLineStringArray[2],
+                    LocalDateTime.parse(nextLineStringArray[3], Aladdin.DATE_TIME_STORE),
+                    LocalDateTime.parse(nextLineStringArray[4], Aladdin.DATE_TIME_STORE));
+
+        } else { // nextLineStringArray[0].equals("T")
+            // Create Todo task
+            newTask = new Todo(nextLineStringArray[2]);
+        }
+
+        // If task is marked done
+        if (nextLineStringArray[1].equals("1")) {
+            newTask.setDone(true);
+        } else {
+            newTask.setDone(false);
+        }
+
+        return newTask;
     }
 
     /**

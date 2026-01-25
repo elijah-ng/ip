@@ -1,9 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -58,38 +52,6 @@ public class Aladdin {
         storage.load(this.taskList);
 
         System.out.println(LINE_SEP);
-    }
-
-    // Helper Method to Parse and Deserialize Tasks
-    public static Task parseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
-        String[] nextLineStringArray = nextLineString.split("\\|");
-
-        Task newTask = null;
-
-        if (nextLineStringArray[0].equals("D")) {
-            // Create Deadline task
-            newTask = new Deadline(nextLineStringArray[2],
-                    LocalDateTime.parse(nextLineStringArray[3], DATE_TIME_STORE));
-
-        } else if (nextLineStringArray[0].equals("E")) {
-            // Create Event task
-            newTask = new Event(nextLineStringArray[2],
-                    LocalDateTime.parse(nextLineStringArray[3], DATE_TIME_STORE),
-                    LocalDateTime.parse(nextLineStringArray[4], DATE_TIME_STORE));
-
-        } else { // nextLineStringArray[0].equals("T")
-            // Create Todo task
-            newTask = new Todo(nextLineStringArray[2]);
-        }
-
-        // If task is marked done
-        if (nextLineStringArray[1].equals("1")) {
-            newTask.setDone(true);
-        } else {
-            newTask.setDone(false);
-        }
-
-        return newTask;
     }
 
     // Saves tasks to file whenever task list changes.
