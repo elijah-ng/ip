@@ -26,8 +26,10 @@ public class Aladdin {
 
     /** Line Separator used by Aladdin chatbot */
     private static final String LINE_SEP = "_".repeat(60);
+
     /** File Path to Store Tasks */
     private static final String TASK_FILE_PATH = "data/aladdin.txt";
+    private Storage storage;
 
     /** Name of chatbot */
     private String name;
@@ -47,45 +49,19 @@ public class Aladdin {
     public Aladdin(String name) {
         this.name = name;
         this.taskList = new TaskList();
+        this.storage = new Storage(TASK_FILE_PATH);
     }
 
     private void loadTasksFromFile() {
         System.out.println(LINE_SEP);
 
-        File f = new File(TASK_FILE_PATH);
-        try {
-            Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
-            System.out.println("File containing saved tasks found!");
-            System.out.println("Loading tasks from: " + f.getAbsolutePath());
-
-            // while file contains non-whitespace character
-            while (s.hasNext()) {
-                // Store next line
-                String nextLineString = s.nextLine();
-                Task newTask = parseTask(nextLineString);
-
-                // Add to taskList
-                this.taskList.addTask(newTask);
-            }
-
-        } catch (FileNotFoundException e) {
-            // If file does not exist, no task to load
-            System.out.println("Note: There was no saved tasks file found from a previous session.");
-            System.out.println("You may safely ignore this if this is your first time using Aladdin.");
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("There was an error loading tasks from the file.");
-            System.out.println("Please check data formatting in " + TASK_FILE_PATH);
-
-        } catch (DateTimeParseException e) {
-            System.out.println("DateTimeParseException: " + e.getMessage());
-        }
+        storage.load(this.taskList);
 
         System.out.println(LINE_SEP);
     }
 
     // Helper Method to Parse and Deserialize Tasks
-    private static Task parseTask(String nextLineString) {
+    public static Task parseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
         String[] nextLineStringArray = nextLineString.split("\\|");
 
         Task newTask = null;
@@ -119,24 +95,7 @@ public class Aladdin {
     // Saves tasks to file whenever task list changes.
     // If no tasks in taskList, create an empty file.
     private void saveTasksToFile() {
-        try {
-            // Creates directory if it does not exist
-            Files.createDirectories(Paths.get("data"));
-            // Creates file if it does not exist, otherwise overwrite (delete/add tasks)
-            FileWriter fw = new FileWriter(TASK_FILE_PATH);
-
-            for (int i = 0; i < this.taskList.getSize(); i++) {
-                Task currentTask = this.taskList.getTask(i);
-                fw.write(currentTask.serialise() + System.lineSeparator());
-            }
-
-            // Close FileWrite object to complete writing operation
-            fw.close();
-
-        } catch (IOException e) {
-            System.out.println("Error creating/opening " + TASK_FILE_PATH
-                    + " file to save tasks: " + e.getMessage());
-        }
+        storage.save(this.taskList);
     }
 
     /**
