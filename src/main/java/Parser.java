@@ -3,7 +3,7 @@ import java.time.format.DateTimeParseException;
 
 // Solution below inspired by AB2. https://github.com/se-edu/addressbook-level2
 /**
- * Represents a Parser to make sense of user commands.
+ * Represents a Parser to make sense of user commands for Aladdin.
  */
 public class Parser {
 
@@ -165,7 +165,7 @@ public class Parser {
 
         } catch (DateTimeParseException e) {
             throw new AladdinException("Invalid Deadline 'by' Date. "
-                    + "Please enter in d-M-yyyy HHmm format.\n"
+                    + "Please enter in d-M-yyyy HHmm format." + System.lineSeparator()
                     + e.getMessage());
         }
 

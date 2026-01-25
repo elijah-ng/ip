@@ -72,12 +72,22 @@ public class TaskList {
     }
 
     /**
-     * Prints tasks in their order in the list.
+     * Returns a string representation of taskList.
      */
-    public void printTasks() {
+    @Override
+    public String toString() {
+        StringBuilder taskListString = new StringBuilder();
+
         for (int i = 0; i < this.tasks.size(); i++) {
             int taskNumber = i + 1;
-            System.out.println(taskNumber + ". " + this.tasks.get(i));
+            taskListString.append(taskNumber + ". " + this.tasks.get(i));
+
+            // Add new line if not last item
+            if (i < this.tasks.size() - 1) {
+                taskListString.append(System.lineSeparator());
+            }
         }
+        return taskListString.toString();
     }
+
 }

@@ -1,6 +1,5 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 /**
  * Aladdin Chatbot Class
@@ -16,18 +15,15 @@ public class Aladdin {
     public static final DateTimeFormatter DATE_TIME_DISPLAY =
             DateTimeFormatter.ofPattern("d MMM yyyy h:mm a");
 
-
-    /** Line Separator used by Aladdin chatbot */
-    private static final String LINE_SEP = "_".repeat(60);
-
     /** File Path to Store Tasks */
     private static final String TASK_FILE_PATH = "data/aladdin.txt";
-    private Storage storage;
 
     /** Name of chatbot */
     private String name;
     /** Task List of chatbot */
     private TaskList taskList;
+    /** Storage File */
+    private Storage storage;
 
     /**
      * Constructor for Aladdin chatbot.
@@ -41,17 +37,23 @@ public class Aladdin {
     }
 
     private void loadTasksFromFile() {
-        System.out.println(LINE_SEP);
+        try {
+            storage.load(this.taskList);
 
-        storage.load(this.taskList);
-
-        System.out.println(LINE_SEP);
+        } catch (AladdinException e) {
+            Ui.printException(e);
+        }
     }
 
     // Saves tasks to file whenever task list changes.
     // If no tasks in taskList, create an empty file.
     private void saveTasksToFile() {
-        storage.save(this.taskList);
+        try {
+            storage.save(this.taskList);
+
+        } catch (AladdinException e) {
+            Ui.printException(e);
+        }
     }
 
     /**
@@ -95,11 +97,8 @@ public class Aladdin {
         // Add the new task
         this.taskList.addToTaskList(newTask);
 
-        System.out.println(LINE_SEP);
-        System.out.println("Got it. Task has been Added:");
-        System.out.println(newTask);
-        System.out.println("Now you have " + this.taskList.getSize() + " task(s) in the list.");
-        System.out.println(LINE_SEP);
+        Ui.printMsgWithObject("Got it. Task has been Added:", newTask,
+                "Now you have " + this.taskList.getSize() + " task(s) in the list.");
     }
 
     /**
@@ -109,23 +108,20 @@ public class Aladdin {
      * @param isDone Specifies if task is done or not.
      */
     private void markTaskStatus(int taskNumber, boolean isDone) {
-        System.out.println(LINE_SEP); // Beginning line separator
-
         Task modifiedTask = this.taskList.changeTaskStatus(taskNumber, isDone);
 
         if (modifiedTask != null) {
+            String msg;
             if (isDone) {
-                System.out.println("Great Job! I have marked the task as done:");
+                msg = "Great Job! I have marked the task as done:";
             } else {
-                System.out.println("Ok, I have marked the task as not done yet:");
+                msg = "Ok, I have marked the task as not done yet:";
             }
-            System.out.println(modifiedTask);
+            Ui.printMsgWithObject(msg, modifiedTask);
 
         } else {
-            System.out.println("Task " + taskNumber + " does not exist");
+            Ui.printMsg("Task " + taskNumber + " does not exist");
         }
-
-        System.out.println(LINE_SEP); // Ending line separator
     }
 
     /**
@@ -134,29 +130,22 @@ public class Aladdin {
      * @param taskNumber Specified task to delete (starts from 1).
      */
     private void deleteTask(int taskNumber) {
-        System.out.println(LINE_SEP); // Ending line separator
         Task deletedTask = this.taskList.deleteTask(taskNumber);
 
         if (deletedTask != null) {
-            System.out.println("Noted. I have removed this task:");
-            System.out.println(deletedTask);
-            System.out.println("Now you have " + this.taskList.getSize() + " task(s) in the list.");
+            Ui.printMsgWithObject("Noted. I have removed this task:", deletedTask,
+                    "Now you have " + this.taskList.getSize() + " task(s) in the list.");
 
         } else {
-            System.out.println("Task " + taskNumber + " does not exist");
+            Ui.printMsg("Task " + taskNumber + " does not exist");
         }
-
-        System.out.println(LINE_SEP); // Beginning line separator
     }
 
     /**
      * Prints the chatbot's taskList.
      */
     private void printTaskList() {
-        System.out.println(LINE_SEP);
-        System.out.println("Here are the tasks in your list:");
-        this.taskList.printTasks();
-        System.out.println(LINE_SEP);
+        Ui.printMsgWithObject("Here are the tasks in your list:", taskList);
     }
 
     /**
@@ -165,27 +154,29 @@ public class Aladdin {
      * @param args supplied command-line arguments (if any)
      */
     public static void main(String[] args) {
-        // Create a scanner to read from standard input
-        Scanner sc = new Scanner(System.in);
+
         // Instantiate Aladdin chatbot
-        Aladdin chatbot = new Aladdin("Aladdin");
+        String name = "Aladdin";
+        Aladdin chatbot = new Aladdin(name);
         chatbot.loadTasksFromFile();
 
-        // Print greeting message
-        System.out.println(LINE_SEP);
-        System.out.println("Hello! I am " + chatbot.getName() + "!");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE_SEP);
+        // Print welcome message
+        Ui.printWelcome(name);
 
-        // Return if there is no user input.
-        if (!sc.hasNextLine()) {
-            return;
-        }
+        while (true) {
+            // Get user input
+            String userInput = Ui.getUserInput();
 
-        // Get user input until user types command "bye"
-        String userInput = sc.nextLine();
+            if (userInput == null) {
+                // Return if there is no user input
+                // Required for automated text UI test
+                return;
 
-        while (!userInput.equalsIgnoreCase("bye")) {
+            } else if (userInput.equalsIgnoreCase("bye")) {
+                // Break when user enters command "bye"
+                break;
+            }
+
             try {
                 String[] formattedCommand = Parser.parseUserCommand(userInput);
 
@@ -231,27 +222,12 @@ public class Aladdin {
                 }
 
             } catch (AladdinException e) {
-                System.out.println(LINE_SEP);
-                System.out.println("AladdinException: " + e.getMessage());
-                System.out.println(LINE_SEP);
-
-            } finally {
-                // Return if there is no user input.
-                if (!sc.hasNextLine()) {
-                    return;
-                }
-                // Get next user input
-                userInput = sc.nextLine();
+                Ui.printException(e);
             }
         }
 
-        // Print exit message
-        System.out.println(LINE_SEP);
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINE_SEP);
-
-        // Close scanner
-        sc.close();
+        // Print Exit message
+        Ui.printExit();
     }
 
 }

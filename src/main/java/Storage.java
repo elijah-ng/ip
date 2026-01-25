@@ -30,12 +30,12 @@ public class Storage {
      *
      * @param taskList The lists of tasks to populate.
      */
-    public void load(TaskList taskList) {
-        File f = new File(filePath);
+    public void load(TaskList taskList) throws AladdinException {
+        File f = new File(this.filePath);
         try {
             Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
-            System.out.println("File containing saved tasks found!");
-            System.out.println("Loading tasks from: " + f.getAbsolutePath());
+            Ui.printMsg("File containing saved tasks found!" + System.lineSeparator()
+                    + "Loading tasks from: " + f.getAbsolutePath());
 
             // while file contains non-whitespace character
             while (s.hasNext()) {
@@ -49,17 +49,16 @@ public class Storage {
 
         } catch (FileNotFoundException e) {
             // If file does not exist, no task to load
-            System.out.println("Note: There was no saved tasks file found from a previous session.");
-            System.out.println("You may safely ignore this if this is your first time using Aladdin.");
+            throw new AladdinException("Note: There was no saved tasks file found from a previous session."
+                    + System.lineSeparator() + "You may safely ignore this if this is your first time using Aladdin.");
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("There was an error loading tasks from the file.");
-            System.out.println("Please check data formatting in " + filePath);
+            throw new AladdinException("There was an error loading tasks from the file. "
+                    + "Please check data formatting in " + this.filePath);
 
         } catch (DateTimeParseException e) {
-            System.out.println("DateTimeParseException: " + e.getMessage());
+            throw new AladdinException("Corrupted LocalDateTime format in : " + this.filePath);
         }
-
     }
 
     // Helper Method to Deserialize Tasks
@@ -101,16 +100,16 @@ public class Storage {
      *
      * @param taskList The list of tasks to save into a file.
      */
-    public void save(TaskList taskList) {
+    public void save(TaskList taskList) throws AladdinException {
         try {
-            Path parentDirectory = Paths.get(filePath).getParent();
+            Path parentDirectory = Paths.get(this.filePath).getParent();
             if (parentDirectory != null) {
                 // Creates parent directory if it does not exist
                 Files.createDirectories(parentDirectory);
             }
 
             // Creates file if it does not exist, otherwise overwrite (delete/add tasks)
-            FileWriter fw = new FileWriter(filePath);
+            FileWriter fw = new FileWriter(this.filePath);
 
             for (int i = 0; i < taskList.getSize(); i++) {
                 Task currentTask = taskList.getTask(i);
@@ -121,7 +120,7 @@ public class Storage {
             fw.close();
 
         } catch (IOException e) {
-            System.out.println("Error creating/opening " + filePath
+            throw new AladdinException("Error creating/opening " + this.filePath
                     + " file to save tasks: " + e.getMessage());
         }
     }
