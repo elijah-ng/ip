@@ -8,8 +8,10 @@ import java.time.format.DateTimeParseException;
  * Represents a Parser to make sense of user commands for Aladdin.
  */
 public class Parser {
-    /** Enumeration for Commands */
-    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
+    /**
+     * Enumeration for Commands
+     */
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND }
 
     /**
      * Returns the formatted user command as an array of substrings.
@@ -59,6 +61,10 @@ public class Parser {
 
             case EVENT:
                 formattedUserCommand = Parser.formatEvent(userInputArray[1]);
+                break;
+
+            case FIND:
+                formattedUserCommand = Parser.formatFind(userInputArray[1]);
                 break;
             }
             return formattedUserCommand;
@@ -218,6 +224,14 @@ public class Parser {
         }
 
         return formattedEventCommand;
+    }
+
+    private static String[] formatFind(String commandDescription) {
+        String[] formattedFindCommand = new String[2];
+        formattedFindCommand[0] = "FIND";
+        formattedFindCommand[1] = commandDescription;
+
+        return formattedFindCommand;
     }
 
 }
