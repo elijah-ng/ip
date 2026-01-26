@@ -6,35 +6,49 @@ import java.util.ArrayList;
  * Represents a list of tasks.
  */
 public class TaskList {
+    /** ArrayList of Task objects */
     private ArrayList<Task> tasks;
 
+    /**
+     * Creates a TaskList instance.
+     */
     public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
 
-    /*
-    public TaskList(Storage initStorage) {
-        this.tasks = new ArrayList<Task>();
-    }
-    */
-
+    /**
+     * Returns number of tasks in the list.
+     *
+     * @return Size of ArrayList.
+     */
     public int getSize() {
         return this.tasks.size();
     }
 
+    /**
+     * Adds a Task to the list.
+     *
+     * @param t Task to be added to the list.
+     */
     public void addToTaskList(Task t) {
         this.tasks.add(t);
     }
 
+    /**
+     * Returns the task at the specified index.
+     *
+     * @param index Index of Task to return.
+     * @return The Task at the specified index.
+     */
     public Task getTask(int index) {
         return this.tasks.get(index);
     }
 
     /**
-     * Deletes a task from list.
+     * Deletes a task from the list.
      *
      * @param taskNumber Specified task to delete (starts from 1).
-     * @return The task deleted if valid taskNumber. Otherwise, return null.
+     * @return The Task deleted if valid taskNumber. Otherwise, return null.
      */
     public Task deleteTask(int taskNumber) {
         // If taskNumber is valid
@@ -48,7 +62,8 @@ public class TaskList {
     }
 
     /**
-     * Change Task Status and either Mark or Unmark the specified task as done or not done.
+     * Changes Task status.
+     * Either mark or unmark the specified task as done or not done.
      *
      * @param taskNumber Specified task to mark or unmark.
      * @return The modified task if valid taskNumber. Otherwise, return null.
@@ -74,7 +89,9 @@ public class TaskList {
     }
 
     /**
-     * Returns a string representation of taskList.
+     * Returns a string representation of a TaskList.
+     *
+     * @return A string representing the TaskList.
      */
     @Override
     public String toString() {

@@ -3,19 +3,21 @@ package aladdin;
 import java.time.LocalDateTime;
 
 /**
- * Event Class
+ * Represents an Event task.
  * Tasks that start at a specific date/time and ends at a specific date/time.
  */
 public class Event extends Task {
+    /** Event From Date/Time */
     protected LocalDateTime from;
+    /** Event To Date/Time */
     protected LocalDateTime to;
 
     /**
-     * Constructor for Event.
+     * Creates an Event task instance.
      *
-     * @param description description of event.
-     * @param from start date/time of event.
-     * @param to end date/time of event.
+     * @param description Description of event.
+     * @param from Start date/time of event.
+     * @param to End date/time of event.
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);

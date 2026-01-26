@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Aladdin Chatbot Class
+ * Represents an Aladdin chatbot.
  *
- * @author Elijah Ng Ding Jie
  */
 public class Aladdin {
     /** 24-Hour DateTime Format for Tasks Stored by Aladdin */
@@ -28,9 +27,9 @@ public class Aladdin {
     private Storage storage;
 
     /**
-     * Constructor for Aladdin chatbot.
+     * Creates an Aladdin chatbot instance.
      *
-     * @param name name of the chatbot
+     * @param name Name of the chatbot.
      */
     public Aladdin(String name) {
         this.name = name;
@@ -47,8 +46,10 @@ public class Aladdin {
         }
     }
 
-    // Saves tasks to file whenever task list changes.
-    // If no tasks in taskList, create an empty file.
+    /**
+     * Saves tasks to file whenever task list changes.
+     * If no tasks in taskList, create an empty file.
+     */
     private void saveTasksToFile() {
         try {
             storage.save(this.taskList);
@@ -59,9 +60,9 @@ public class Aladdin {
     }
 
     /**
-     * Getter for name
+     * Getter for name.
      *
-     * @return name of chatbot
+     * @return Name of chatbot.
      */
     public String getName() {
         return this.name;
@@ -104,7 +105,8 @@ public class Aladdin {
     }
 
     /**
-     * Change Task Status and either Mark or Unmark the specified task as done or not done.
+     * Changes task status.
+     * Either mark or unmark the specified task as done or not done.
      *
      * @param taskNumber Specified task to mark or unmark.
      * @param isDone Specifies if task is done or not.
@@ -127,7 +129,7 @@ public class Aladdin {
     }
 
     /**
-     * Delete a Task from list based on the task number.
+     * Deletes a task from list based on the task number.
      *
      * @param taskNumber Specified task to delete (starts from 1).
      */
@@ -151,9 +153,9 @@ public class Aladdin {
     }
 
     /**
-     * Main method to start Aladdin chatbot greeting.
+     * Main method to initialise and run Aladdin chatbot.
      *
-     * @param args supplied command-line arguments (if any)
+     * @param args Supplied command-line arguments (if any).
      */
     public static void main(String[] args) {
 

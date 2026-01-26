@@ -15,11 +15,11 @@ import java.util.Scanner;
  * Represents a file that stores tasks.
  */
 public class Storage {
-
+    /** File path for the storage file */
     private String filePath;
 
     /**
-     * Creates a Storage object.
+     * Creates a Storage instance.
      *
      * @param filePath The path of the storage file.
      */
@@ -28,9 +28,10 @@ public class Storage {
     }
 
     /**
-     * Loads the tasks from storage file into TaskList.
+     * Loads the tasks from storage file into a TaskList.
      *
      * @param taskList The lists of tasks to populate.
+     * @throws AladdinException If storage file is not found or corrupted.
      */
     public void load(TaskList taskList) throws AladdinException {
         File f = new File(this.filePath);
@@ -63,8 +64,14 @@ public class Storage {
         }
     }
 
-    // Helper Method to Deserialize Tasks
-    // throws ArrayIndexOutOfBoundsException if storage file corrupted.
+    /**
+     * Returns a Task object instance.
+     * Helper Method to deserialize Tasks.
+     *
+     * @param nextLineString Serialised string representation of a Task.
+     * @return A Task object instance.
+     * @throws ArrayIndexOutOfBoundsException If storage file is corrupted.
+     */
     protected static Task deserialiseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
         String[] nextLineStringArray = nextLineString.split("\\|");
 
@@ -98,9 +105,10 @@ public class Storage {
     }
 
     /**
-     * Saves tasks in TaskList to storage file for persistence.
+     * Saves tasks in a TaskList to the storage file for archival.
      *
-     * @param taskList The list of tasks to save into a file.
+     * @param taskList The list of tasks to save into the storage file.
+     * @throws AladdinException If an error occurs when creating/opening the storage file.
      */
     public void save(TaskList taskList) throws AladdinException {
         try {
@@ -111,6 +119,7 @@ public class Storage {
             }
 
             // Creates file if it does not exist, otherwise overwrite (delete/add tasks)
+            // throws IOException
             FileWriter fw = new FileWriter(this.filePath);
 
             for (int i = 0; i < taskList.getSize(); i++) {
