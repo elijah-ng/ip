@@ -3,18 +3,18 @@ package aladdin;
 import java.time.LocalDateTime;
 
 /**
- * Deadline Class
+ * Represents a Deadline task.
  * Tasks that need to be done before a specific date/time.
  */
 public class Deadline extends Task {
-
+    /** Deadline By Date/Time */
     protected LocalDateTime by;
 
     /**
-     * Constructor for Deadline.
+     * Creates a Deadline task instance.
      *
-     * @param description description of deadline task.
-     * @param by date/time for deadline.
+     * @param description Description of deadline task.
+     * @param by Date/time for deadline.
      */
     public Deadline(String description, LocalDateTime by) {
         super(description);

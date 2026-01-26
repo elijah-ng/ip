@@ -8,18 +8,15 @@ import java.time.format.DateTimeParseException;
  * Represents a Parser to make sense of user commands for Aladdin.
  */
 public class Parser {
-
-    /**
-     * Enumeration for Commands
-     */
+    /** Enumeration for Commands */
     private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
 
     /**
+     * Returns the formatted user command as an array of substrings.
      *
-     * @param userInput
+     * @param userInput The user's input to parse.
      * @return A string array containing substrings of formatted user command.
-     * @throws AladdinException If invalid Command formatting.
-     * @throws IllegalArgumentException If Command is Invalid.
+     * @throws AladdinException If user command is invalid.
      */
     public static String[] parseUserCommand(String userInput) throws AladdinException {
         String[] userInputArray = userInput.split(" ", 2);

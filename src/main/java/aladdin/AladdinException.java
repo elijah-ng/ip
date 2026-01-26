@@ -1,14 +1,13 @@
 package aladdin;
 
 /**
- * AladdinException class
- * Represent checked exceptions specific to Aladdin.
+ * Represents checked exceptions that occurs when running Aladdin.
  */
 public class AladdinException extends Exception {
     /**
-     * Constructor for AladdinException.
+     * Creates an AladdinException instance.
      *
-     * @param message exception message.
+     * @param message Exception message.
      */
     public AladdinException(String message) {
         super(message);

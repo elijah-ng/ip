@@ -1,15 +1,15 @@
 package aladdin;
 
 /**
- * Todo Class
- * tasks without any date/time attached to it
+ * Represents a Todo task.
+ * Tasks that do not have any date/time attached to it.
  */
 public class Todo extends Task {
 
     /**
-     * Constructor for Todo.
+     * Creates a Todo task instance.
      *
-     * @param description description of event.
+     * @param description Description of Todo task.
      */
     public Todo(String description) {
         super(description);

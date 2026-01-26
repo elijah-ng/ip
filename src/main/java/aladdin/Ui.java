@@ -20,6 +20,11 @@ public class Ui {
         System.out.println(LINE_SEP);
     }
 
+    /**
+     * Prints a welcome greeting message.
+     *
+     * @param name The name to print in the welcome message.
+     */
     public static void printWelcome(String name) {
         // Print greeting message
         System.out.println(LINE_SEP);
@@ -28,6 +33,9 @@ public class Ui {
         System.out.println(LINE_SEP);
     }
 
+    /**
+     * Prints an exit message.
+     */
     public static void printExit() {
         // Print exit message
         System.out.println(LINE_SEP);
@@ -35,6 +43,11 @@ public class Ui {
         System.out.println(LINE_SEP);
     }
 
+    /**
+     * Prints an exception message.
+     *
+     * @param aladdinException The exception whose message is to be printed.
+     */
     public static void printException(AladdinException aladdinException) {
         System.out.println(LINE_SEP);
         System.out.println("AladdinException: " + aladdinException.getMessage());
@@ -42,7 +55,7 @@ public class Ui {
     }
 
     /**
-     * Prints a message.
+     * Prints a supplied message.
      *
      * @param msg Message to print.
      */
@@ -53,7 +66,7 @@ public class Ui {
     }
 
     /**
-     * Prints a message, then string representation of an object.
+     * Prints a message, then the string representation of an object.
      *
      * @param msg Message to print.
      * @param obj Object to print its string representation.
@@ -80,6 +93,11 @@ public class Ui {
         System.out.println(LINE_SEP);
     }
 
+    /**
+     * Returns the user input from standard input.
+     *
+     * @return The user input as a string.
+     */
     public static String getUserInput() {
         // Return if there is no user input
         // Required for automated text UI test
