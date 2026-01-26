@@ -216,7 +216,7 @@ public class Parser {
 
         } catch (DateTimeParseException e) {
             throw new AladdinException("Invalid Event 'from' and/or 'to' Date. "
-                    + "Please enter in d-M-yyyy HHmm format.\n"
+                    + "Please enter in d-M-yyyy HHmm format." + System.lineSeparator()
                     + e.getMessage());
         }
 

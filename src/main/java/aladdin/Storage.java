@@ -65,7 +65,7 @@ public class Storage {
 
     // Helper Method to Deserialize Tasks
     // throws ArrayIndexOutOfBoundsException if storage file corrupted.
-    private static Task deserialiseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
+    protected static Task deserialiseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
         String[] nextLineStringArray = nextLineString.split("\\|");
 
         Task newTask = null;
