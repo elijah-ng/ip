@@ -74,6 +74,32 @@ public class TaskList {
     }
 
     /**
+     * Searches tasks for the specified keyword.
+     *
+     * @param keyword Keyword to match with the tasks' descriptions.
+     * @return A String representing the tasks with keyword found in the task description.
+     */
+    public String searchTasks(String keyword) {
+        StringBuilder matchingTaskListString = new StringBuilder();
+        String separator = "";
+
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task currentTask = this.tasks.get(i);
+
+            if (currentTask.description.contains(keyword)) {
+                // No new line separator for first task
+                matchingTaskListString.append(separator);
+                separator = System.lineSeparator();
+
+                int taskNumber = i + 1;
+                matchingTaskListString.append(taskNumber + ". " + this.tasks.get(i));
+            }
+
+        }
+        return matchingTaskListString.toString();
+    }
+
+    /**
      * Returns a string representation of taskList.
      */
     @Override

@@ -12,7 +12,7 @@ public class Parser {
     /**
      * Enumeration for Commands
      */
-    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE }
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND }
 
     /**
      *
@@ -62,6 +62,10 @@ public class Parser {
 
             case EVENT:
                 formattedUserCommand = Parser.formatEvent(userInputArray[1]);
+                break;
+
+            case FIND:
+                formattedUserCommand = Parser.formatFind(userInputArray[1]);
                 break;
             }
             return formattedUserCommand;
@@ -221,6 +225,14 @@ public class Parser {
         }
 
         return formattedEventCommand;
+    }
+
+    private static String[] formatFind(String commandDescription) {
+        String[] formattedFindCommand = new String[2];
+        formattedFindCommand[0] = "FIND";
+        formattedFindCommand[1] = commandDescription;
+
+        return formattedFindCommand;
     }
 
 }

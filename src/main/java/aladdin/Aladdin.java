@@ -151,6 +151,17 @@ public class Aladdin {
     }
 
     /**
+     * Finds Tasks with description matching a keyword.
+     *
+     * @param keyword Specified keyword to search for.
+     */
+    private void findDescription(String keyword) {
+        String matchingTasks = this.taskList.searchTasks(keyword);
+
+        Ui.printMsgWithObject("Here are the matching tasks in your list:", matchingTasks);
+    }
+
+    /**
      * Main method to start Aladdin chatbot greeting.
      *
      * @param args supplied command-line arguments (if any)
@@ -221,6 +232,10 @@ public class Aladdin {
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
+
+                case "FIND":
+                    // Call method to find tasks with keyword
+                    chatbot.findDescription(formattedCommand[1]);
                 }
 
             } catch (AladdinException e) {

@@ -52,4 +52,7 @@ event hello /from 1-1-2026 0100 /to 1-1-2026 0000
 event hello /from 1-1-2026 0000 /to 1-1-2026 0000
 event hello /from 1-1-2026 0000 /to 1-1-2026 0001
 LIST
+find o
+find homework
+find nothing
 bye
