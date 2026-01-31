@@ -1,8 +1,10 @@
 package aladdin;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class StorageTest {
     @Test
@@ -22,7 +24,7 @@ public class StorageTest {
     }
 
     @Test
-    public void deserialiseTask_validTodo_Success() {
+    public void deserialiseTask_validTodo_success() {
         try {
             Task testTask = Storage.deserialiseTask("T|1|read book");
             Todo testTodo = (Todo) testTask;
@@ -35,7 +37,7 @@ public class StorageTest {
     }
 
     @Test
-    public void deserialiseTask_validDeadline_Success() {
+    public void deserialiseTask_validDeadline_success() {
         try {
             Task testTask = Storage.deserialiseTask("D|0|return book|6-6-2026 1800");
             Deadline testDeadline = (Deadline) testTask;
@@ -49,7 +51,7 @@ public class StorageTest {
     }
 
     @Test
-    public void deserialiseTask_validEvent_Success() {
+    public void deserialiseTask_validEvent_success() {
         try {
             Task testTask = Storage.deserialiseTask("E|0|project meeting|6-8-2026 1400|6-8-2026 1600");
             Event testEvent = (Event) testTask;
@@ -66,21 +68,21 @@ public class StorageTest {
     @Test
     public void deserialiseTask_invalidTodo_exceptionThrown() {
         assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> {Storage.deserialiseTask("T|0");}
+                () -> { Storage.deserialiseTask("T|0"); }
         );
     }
 
     @Test
     public void deserialiseTask_invalidDeadline_exceptionThrown() {
         assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> {Storage.deserialiseTask("D|0|deadline task");}
+                () -> { Storage.deserialiseTask("D|0|deadline task"); }
         );
     }
 
     @Test
     public void deserialiseTask_invalidEvent_exceptionThrown() {
         assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> {Storage.deserialiseTask("E|1|event task|6-8-2026 1400");}
+                () -> { Storage.deserialiseTask("E|1|event task|6-8-2026 1400"); }
         );
     }
 

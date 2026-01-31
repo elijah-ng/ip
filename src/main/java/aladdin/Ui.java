@@ -11,7 +11,7 @@ public class Ui {
     private static final String LINE_SEP = "_".repeat(60);
 
     /** Scanner to read from standard input */
-    private static final Scanner scannerInput = new Scanner(System.in);;
+    private static final Scanner scannerInput = new Scanner(System.in);
 
     /**
      * Prints line divider.

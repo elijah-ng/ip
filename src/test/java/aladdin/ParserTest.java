@@ -1,9 +1,9 @@
 package aladdin;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 public class ParserTest {
     @Test
@@ -18,7 +18,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parseUserCommand_validList_Success() {
+    public void parseUserCommand_validList_success() {
         try {
             String[] formattedCommand = Parser.parseUserCommand("list");
             assertEquals("LIST", formattedCommand[0]);
@@ -62,7 +62,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parseUserCommand_validTodo_Success() {
+    public void parseUserCommand_validTodo_success() {
         try {
             String[] formattedCommand = Parser.parseUserCommand("todo eat");
             assertEquals("TODO", formattedCommand[0]);
@@ -118,7 +118,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parseUserCommand_validDeadline_Success() {
+    public void parseUserCommand_validDeadline_success() {
         try {
             String[] formattedCommand = Parser.parseUserCommand("deadline eat /by 1-1-2026 1400");
             assertEquals("DEADLINE", formattedCommand[0]);
@@ -240,7 +240,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parseUserCommand_validEvent_Success() {
+    public void parseUserCommand_validEvent_success() {
         try {
             String[] formattedCommand = Parser
                     .parseUserCommand("event carnival /from 1-1-2026 1400 /to 1-1-2026 1600");
@@ -309,7 +309,8 @@ public class ParserTest {
 
         } catch (AladdinException e) {
             assertEquals("Invalid event format. "
-                    + "Please specify {description} /from {date/time} /to {date/time}.", e.getMessage());        }
+                    + "Please specify {description} /from {date/time} /to {date/time}.", e.getMessage());
+        }
     }
 
     @Test
@@ -320,7 +321,8 @@ public class ParserTest {
 
         } catch (AladdinException e) {
             assertEquals("Invalid event format. "
-                    + "Please specify {description} /from {date/time} /to {date/time}.", e.getMessage());        }
+                    + "Please specify {description} /from {date/time} /to {date/time}.", e.getMessage());
+        }
     }
 
     @Test
