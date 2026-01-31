@@ -218,7 +218,9 @@ public class Aladdin {
                     break;
 
                 case "TODO":
+                    // Fallthrough
                 case "DEADLINE":
+                    // Fallthrough
                 case "EVENT":
                     // Add task to taskList
                     chatbot.addTask(formattedCommand);
@@ -238,6 +240,11 @@ public class Aladdin {
                 case "FIND":
                     // Call method to find tasks with keyword
                     chatbot.findDescription(formattedCommand[1]);
+                    break;
+
+                default:
+                    // Do nothing. Should never reach default case
+                    break;
                 }
 
             } catch (AladdinException e) {

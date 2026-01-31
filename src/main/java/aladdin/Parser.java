@@ -66,6 +66,10 @@ public class Parser {
             case FIND:
                 formattedUserCommand = Parser.formatFind(userInputArray[1]);
                 break;
+
+            default:
+                // Do nothing. Should never reach default case
+                break;
             }
             return formattedUserCommand;
 
