@@ -1,5 +1,7 @@
 package aladdin;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -7,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+
 /**
  * Controller for the main GUI.
  */
@@ -25,18 +29,27 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     private Image aladdinImage = new Image(this.getClass().getResourceAsStream("/images/DaAladdin.png"));
 
+    /**
+     * Initializes MainWindow.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Aladdin instance */
+    /** Injects the Aladdin instance. */
     public void setAladdin(Aladdin aladdin) {
         this.aladdin = aladdin;
+
+        // Display Aladdin welcome message
+        String welcomeMessage = aladdin.start();
+        DialogBox dialogBox = DialogBox.getAladdinDialog(welcomeMessage, aladdinImage);
+        dialogContainer.getChildren().addAll(dialogBox);
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Aladdin's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input
+     * and the other containing Aladdin's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -48,5 +61,15 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getAladdinDialog(response, aladdinImage)
         );
         userInput.clear();
+
+        // Exit on case-insensitive "bye" command
+        if (input.toUpperCase().startsWith("BYE")) {
+            // Solution below inspired by
+            // https://stackoverflow.com/questions/30543619/how-to-use-pausetransition-method-in-javafx
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(event -> Platform.exit());
+            pause.play();
+        }
+
     }
 }

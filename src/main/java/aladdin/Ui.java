@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Ui {
 
     /** Line Separator used by Aladdin chatbot */
-    private static final String LINE_SEP = "_".repeat(60);
+    private static final String LINE_SEP = "_".repeat(50);
 
     /** Scanner to read from standard input */
     private static final Scanner scannerInput = new Scanner(System.in);
@@ -25,19 +25,12 @@ public class Ui {
      *
      * @param name The name to print in the welcome message.
      */
-    public static String printWelcome(String name) {
+    public static void printWelcome(String name) {
         // Print greeting message
-//        System.out.println(LINE_SEP);
-//        System.out.println("Hello! I am " + name + "!");
-//        System.out.println("What can I do for you?");
-//        System.out.println(LINE_SEP);
-
-        String message = LINE_SEP + "\n"
-                + "Hello! I am " + name + "!"
-                + "What can I do for you?"
-                + LINE_SEP;
-
-        return message;
+        System.out.println(LINE_SEP);
+        System.out.println("Hello! I am " + name + "!");
+        System.out.println("What can I do for you?");
+        System.out.println(LINE_SEP);
     }
 
     /**
@@ -64,23 +57,23 @@ public class Ui {
     /**
      * Prints a supplied message.
      *
-     * @param msg Message to print.
+     * @param message Message to print.
      */
-    public static void printMsg(String msg) {
+    public static void printMessage(String message) {
         System.out.println(LINE_SEP);
-        System.out.println(msg);
+        System.out.println(message);
         System.out.println(LINE_SEP);
     }
 
     /**
      * Prints a message, then the string representation of an object.
      *
-     * @param msg Message to print.
+     * @param message Message to print.
      * @param obj Object to print its string representation.
      */
-    public static void printMsgWithObject(String msg, Object obj) {
+    public static void printMessageWithObject(String message, Object obj) {
         System.out.println(LINE_SEP);
-        System.out.println(msg);
+        System.out.println(message);
         System.out.println(obj);
         System.out.println(LINE_SEP);
     }
@@ -88,15 +81,15 @@ public class Ui {
     /**
      * Prints a message, string representation of an object, then another message.
      *
-     * @param msg1 First message to print.
+     * @param firstMessage First message to print.
      * @param obj Object to print its string representation.
-     * @param msg2 Second message to print.
+     * @param secondMessage Second message to print.
      */
-    public static void printMsgWithObject(String msg1, Object obj, String msg2) {
+    public static void printMessageWithObject(String firstMessage, Object obj, String secondMessage) {
         System.out.println(LINE_SEP);
-        System.out.println(msg1);
+        System.out.println(firstMessage);
         System.out.println(obj);
-        System.out.println(msg2);
+        System.out.println(secondMessage);
         System.out.println(LINE_SEP);
     }
 

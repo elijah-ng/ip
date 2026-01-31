@@ -37,7 +37,7 @@ public class Storage {
         File f = new File(this.filePath);
         try {
             Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
-            Ui.printMsg("File containing saved tasks found!" + System.lineSeparator()
+            Ui.printMessage("File containing saved tasks found!" + System.lineSeparator()
                     + "Loading tasks from: " + f.getAbsolutePath());
 
             // while file contains non-whitespace character

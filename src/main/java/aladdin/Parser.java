@@ -11,7 +11,7 @@ public class Parser {
     /**
      * Enumeration for Commands
      */
-    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND }
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE }
 
     /**
      * Returns the formatted user command as an array of substrings.
@@ -28,13 +28,18 @@ public class Parser {
             Command mainCommand = Command.valueOf(userInputArray[0].toUpperCase());
 
             // Only list command can have 1 substring. All other commands have at least 2 substrings
-            if ((userInputArray.length != 2) && (mainCommand != Command.LIST)) {
+            boolean isByeOrList = (mainCommand == Command.BYE) || (mainCommand == Command.LIST);
+            if ((userInputArray.length != 2) && (!isByeOrList)) {
                 throw new AladdinException("Invalid command. Please enter full command.");
             }
 
             String[] formattedUserCommand = null;
 
             switch (mainCommand) {
+            case BYE:
+                formattedUserCommand = Parser.formatBye();
+                break;
+
             case LIST:
                 formattedUserCommand = Parser.formatList();
                 break;
@@ -76,6 +81,12 @@ public class Parser {
         } catch (IllegalArgumentException e) {
             throw new AladdinException("Invalid command.");
         }
+    }
+
+    private static String[] formatBye() {
+        String[] formattedByeCommand = new String[1];
+        formattedByeCommand[0] = "BYE";
+        return formattedByeCommand;
     }
 
     private static String[] formatList() {
