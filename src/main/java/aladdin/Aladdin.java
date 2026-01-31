@@ -1,11 +1,12 @@
 package aladdin;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an Aladdin chatbot.
- *
  */
 public class Aladdin {
     /** 24-Hour DateTime Format for Tasks Stored by Aladdin */
@@ -100,7 +101,7 @@ public class Aladdin {
         // Add the new task
         this.taskList.addToTaskList(newTask);
 
-        Ui.printMsgWithObject("Got it. Task has been Added:", newTask,
+        Ui.printMessageWithObject("Got it. Task has been Added:", newTask,
                 "Now you have " + this.taskList.getSize() + " task(s) in the list.");
     }
 
@@ -115,16 +116,16 @@ public class Aladdin {
         Task modifiedTask = this.taskList.changeTaskStatus(taskNumber, isDone);
 
         if (modifiedTask != null) {
-            String msg;
+            String message;
             if (isDone) {
-                msg = "Great Job! I have marked the task as done:";
+                message = "Great Job! I have marked the task as done:";
             } else {
-                msg = "Ok, I have marked the task as not done yet:";
+                message = "Ok, I have marked the task as not done yet:";
             }
-            Ui.printMsgWithObject(msg, modifiedTask);
+            Ui.printMessageWithObject(message, modifiedTask);
 
         } else {
-            Ui.printMsg("Task " + taskNumber + " does not exist");
+            Ui.printMessage("Task " + taskNumber + " does not exist");
         }
     }
 
@@ -137,11 +138,11 @@ public class Aladdin {
         Task deletedTask = this.taskList.deleteTask(taskNumber);
 
         if (deletedTask != null) {
-            Ui.printMsgWithObject("Noted. I have removed this task:", deletedTask,
+            Ui.printMessageWithObject("Noted. I have removed this task:", deletedTask,
                     "Now you have " + this.taskList.getSize() + " task(s) in the list.");
 
         } else {
-            Ui.printMsg("Task " + taskNumber + " does not exist");
+            Ui.printMessage("Task " + taskNumber + " does not exist");
         }
     }
 
@@ -149,7 +150,7 @@ public class Aladdin {
      * Prints the chatbot's taskList.
      */
     private void printTaskList() {
-        Ui.printMsgWithObject("Here are the tasks in your list:", this.taskList);
+        Ui.printMessageWithObject("Here are the tasks in your list:", this.taskList);
     }
 
     /**
@@ -160,7 +161,131 @@ public class Aladdin {
     private void findDescription(String keyword) {
         String matchingTasks = this.taskList.searchTasks(keyword);
 
-        Ui.printMsgWithObject("Here are the matching tasks in your list:", matchingTasks);
+        Ui.printMessageWithObject("Here are the matching tasks in your list:", matchingTasks);
+    }
+
+    /**
+     * Starts Aladdin chatbot by loading tasks from file and printing welcome message.
+     *
+     * @return A string containing text output to System.out.
+     */
+    public String start() {
+        // Solution below inspired by
+        // https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
+
+        // Create stream to store command line output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+
+        // Save System.out
+        PrintStream oldStream = System.out;
+
+        // Set output to printStream
+        System.setOut(printStream);
+
+        try {
+            // Revert System.out
+            this.loadTasksFromFile();
+            Ui.printWelcome(this.name);
+
+        } finally {
+            System.out.flush();
+            System.setOut(oldStream);
+        }
+        // Returns text printed to System.out
+        return outputStream.toString();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     *
+     * @param userInput The user's input from GUI.
+     * @return A string containing text output to System.out.
+     */
+    public String getResponse(String userInput) {
+        // Solution below inspired by
+        // https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
+
+        // Create stream to store command line output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+
+        // Save System.out
+        PrintStream oldStream = System.out;
+
+        // Set output to printStream
+        System.setOut(printStream);
+
+        try {
+            String[] formattedCommand = Parser.parseUserCommand(userInput);
+
+            switch (formattedCommand[0]) {
+            case "LIST":
+                // Print taskList
+                this.printTaskList();
+                break;
+
+            case "MARK":
+                // Call method to mark task
+                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
+
+                // Save updated taskList to file
+                this.saveTasksToFile();
+                break;
+
+            case "UNMARK":
+                // Call method to unmark task
+                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
+
+                // Save updated taskList to file
+                this.saveTasksToFile();
+                break;
+
+            case "TODO":
+                // Fallthrough
+            case "DEADLINE":
+                // Fallthrough
+            case "EVENT":
+                // Add task to taskList
+                this.addTask(formattedCommand);
+
+                // Save updated taskList to file
+                this.saveTasksToFile();
+                break;
+
+            case "DELETE":
+                // Call method to delete task
+                this.deleteTask(Integer.parseInt(formattedCommand[1]));
+
+                // Save updated taskList to file
+                this.saveTasksToFile();
+                break;
+
+            case "FIND":
+                // Call method to find tasks with keyword
+                this.findDescription(formattedCommand[1]);
+                break;
+
+            case "BYE":
+                // Print Exit message
+                Ui.printExit();
+                break;
+
+            default:
+                // Do nothing. Should never reach default case
+                break;
+            }
+
+        } catch (AladdinException e) {
+            Ui.printException(e);
+
+        } finally {
+            // Revert System.out
+            System.out.flush();
+            System.setOut(oldStream);
+        }
+        // Returns text printed to System.out
+        return outputStream.toString();
     }
 
     /**
