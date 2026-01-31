@@ -60,7 +60,7 @@ public class Aladdin {
     }
 
     /**
-     * Getter for name.
+     * Returns name.
      *
      * @return Name of chatbot.
      */
@@ -149,7 +149,7 @@ public class Aladdin {
      * Prints the chatbot's taskList.
      */
     private void printTaskList() {
-        Ui.printMsgWithObject("Here are the tasks in your list:", taskList);
+        Ui.printMsgWithObject("Here are the tasks in your list:", this.taskList);
     }
 
     /**
