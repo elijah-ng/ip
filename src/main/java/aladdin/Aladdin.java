@@ -164,6 +164,22 @@ public class Aladdin {
     }
 
     /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Aladdin heard: " + input;
+    }
+
+    /**
+     * Starts Aladdin.
+     */
+    public String start() {
+        this.loadTasksFromFile();
+
+        return Ui.printWelcome(this.name);
+    }
+
+    /**
      * Main method to initialise and run Aladdin chatbot.
      *
      * @param args Supplied command-line arguments (if any).

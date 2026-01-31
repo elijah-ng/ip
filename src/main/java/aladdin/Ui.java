@@ -25,12 +25,19 @@ public class Ui {
      *
      * @param name The name to print in the welcome message.
      */
-    public static void printWelcome(String name) {
+    public static String printWelcome(String name) {
         // Print greeting message
-        System.out.println(LINE_SEP);
-        System.out.println("Hello! I am " + name + "!");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE_SEP);
+//        System.out.println(LINE_SEP);
+//        System.out.println("Hello! I am " + name + "!");
+//        System.out.println("What can I do for you?");
+//        System.out.println(LINE_SEP);
+
+        String message = LINE_SEP + "\n"
+                + "Hello! I am " + name + "!"
+                + "What can I do for you?"
+                + LINE_SEP;
+
+        return message;
     }
 
     /**
