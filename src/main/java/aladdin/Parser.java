@@ -41,39 +41,30 @@ public class Parser {
             case BYE:
                 formattedUserCommand = Parser.formatBye();
                 break;
-
             case LIST:
                 formattedUserCommand = Parser.formatList();
                 break;
-
             case MARK:
                 formattedUserCommand = Parser.formatMark(userInputArray[1]);
                 break;
-
             case UNMARK:
                 formattedUserCommand = Parser.formatUnmark(userInputArray[1]);
                 break;
-
             case DELETE:
                 formattedUserCommand = Parser.formatDelete(userInputArray[1]);
                 break;
-
             case TODO:
                 formattedUserCommand = Parser.formatTodo(userInputArray[1]);
                 break;
-
             case DEADLINE:
                 formattedUserCommand = Parser.formatDeadline(userInputArray[1]);
                 break;
-
             case EVENT:
                 formattedUserCommand = Parser.formatEvent(userInputArray[1]);
                 break;
-
             case FIND:
                 formattedUserCommand = Parser.formatFind(userInputArray[1]);
                 break;
-
             default:
                 // Do nothing. Should never reach default case
                 break;
@@ -175,24 +166,24 @@ public class Parser {
         formattedDeadlineCommand[0] = "DEADLINE";
 
         // Split into max 2 substrings
-        String[] commandDescriptionArray = commandDescription.split(" /by ", 2);
+        String[] descriptionAndBy = commandDescription.split(" /by ", 2);
 
-        if (commandDescriptionArray.length != 2) {
+        if (descriptionAndBy.length != 2) {
             throw new AladdinException("Invalid deadline format. "
                     + "Please specify {description} /by {date/time}.");
         }
 
         // Check if description is empty, null, or whitespaces only
-        if (commandDescriptionArray[0].isBlank()) {
+        if (descriptionAndBy[0].isBlank()) {
             throw new AladdinException("Invalid Deadline Description. Cannot be empty/blank.");
 
-        } else if (commandDescriptionArray[0].contains("|")) {
+        } else if (descriptionAndBy[0].contains("|")) {
             throw new AladdinException("Invalid Deadline Description. Cannot Contain '|'.");
         }
-        formattedDeadlineCommand[1] = commandDescriptionArray[0];
+        formattedDeadlineCommand[1] = descriptionAndBy[0];
 
         try {
-            LocalDateTime byDate = LocalDateTime.parse(commandDescriptionArray[1], Aladdin.DATE_TIME_STORE);
+            LocalDateTime byDate = LocalDateTime.parse(descriptionAndBy[1], Aladdin.DATE_TIME_STORE);
             formattedDeadlineCommand[2] = byDate.format(Aladdin.DATE_TIME_STORE);
 
         } catch (DateTimeParseException e) {
@@ -213,30 +204,28 @@ public class Parser {
         String eventFormatError = "Invalid event format. "
                 + "Please specify {description} /from {date/time} /to {date/time}.";
 
-        // Split string by "/from"
-        String[] commandDescriptionArray1 = commandDescription.split(" /from ", 2);
-        if (commandDescriptionArray1.length != 2) {
+        String[] descriptionAndDates = commandDescription.split(" /from ", 2);
+        if (descriptionAndDates.length != 2) {
             throw new AladdinException(eventFormatError);
         }
 
-        // Split string by "/to"
-        String[] commandDescriptionArray2 = commandDescriptionArray1[1].split(" /to ", 2);
-        if (commandDescriptionArray2.length != 2) {
+        String[] fromAndTo = descriptionAndDates[1].split(" /to ", 2);
+        if (fromAndTo.length != 2) {
             throw new AladdinException(eventFormatError);
         }
 
         // Check if description is empty, null, or whitespaces only
-        if (commandDescriptionArray1[0].isBlank()) {
+        if (descriptionAndDates[0].isBlank()) {
             throw new AladdinException("Invalid Event Description. Cannot be empty/blank.");
 
-        } else if (commandDescriptionArray1[0].contains("|")) {
+        } else if (descriptionAndDates[0].contains("|")) {
             throw new AladdinException("Invalid Event Description. Cannot Contain '|'.");
         }
-        formattedEventCommand[1] = commandDescriptionArray1[0];
+        formattedEventCommand[1] = descriptionAndDates[0];
 
         try {
-            LocalDateTime fromDate = LocalDateTime.parse(commandDescriptionArray2[0], Aladdin.DATE_TIME_STORE);
-            LocalDateTime toDate = LocalDateTime.parse(commandDescriptionArray2[1], Aladdin.DATE_TIME_STORE);
+            LocalDateTime fromDate = LocalDateTime.parse(fromAndTo[0], Aladdin.DATE_TIME_STORE);
+            LocalDateTime toDate = LocalDateTime.parse(fromAndTo[1], Aladdin.DATE_TIME_STORE);
 
             // If fromDate is not before toDate (fromDate equal or after toDate)
             if (!fromDate.isBefore(toDate)) {
