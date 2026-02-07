@@ -39,8 +39,11 @@ public class Aladdin {
     }
 
     private void loadTasksFromFile() {
+        assert this.storage != null : "storage should not be null";
+        assert this.taskList != null : "taskList should not be null";
+
         try {
-            storage.load(this.taskList);
+            this.storage.load(this.taskList);
 
         } catch (AladdinException e) {
             Ui.printException(e);
@@ -52,8 +55,11 @@ public class Aladdin {
      * If no tasks in taskList, create an empty file.
      */
     private void saveTasksToFile() {
+        assert this.storage != null : "storage should not be null";
+        assert this.taskList != null : "taskList should not be null";
+
         try {
-            storage.save(this.taskList);
+            this.storage.save(this.taskList);
 
         } catch (AladdinException e) {
             Ui.printException(e);
@@ -76,6 +82,8 @@ public class Aladdin {
      * @throws AladdinException if task type is invalid.
      */
     private void addTask(String[] formattedTask) throws AladdinException {
+        assert formattedTask != null : "formattedTask should not be null";
+
         String taskType = formattedTask[0];
         Task newTask = null;
 
@@ -159,6 +167,8 @@ public class Aladdin {
      * @param keyword Specified keyword to search for.
      */
     private void findDescription(String keyword) {
+        assert keyword != null : "keyword should not be null";
+
         String matchingTasks = this.taskList.searchTasks(keyword);
 
         Ui.printMessageWithObject("Here are the matching tasks in your list:", matchingTasks);
@@ -203,6 +213,8 @@ public class Aladdin {
      * @return A string containing text output to System.out.
      */
     public String getResponse(String userInput) {
+        assert userInput != null : "userInput should not be null";
+
         // Solution below inspired by
         // https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
 
@@ -265,7 +277,8 @@ public class Aladdin {
                 Ui.printExit();
                 break;
             default:
-                // Do nothing. Should never reach default case
+                // Should never reach default case
+                assert false : "Invalid command should have thrown AladdinException";
                 break;
             }
 
@@ -283,6 +296,7 @@ public class Aladdin {
 
     /**
      * Main method to initialise and run Aladdin chatbot.
+     * This method is maintained to allow option for Text-based UI.
      *
      * @param args Supplied command-line arguments (if any).
      */
@@ -355,7 +369,8 @@ public class Aladdin {
                     chatbot.findDescription(formattedCommand[1]);
                     break;
                 default:
-                    // Do nothing. Should never reach default case
+                    // Should never reach default case
+                    assert false : "Invalid command should have thrown AladdinException";
                     break;
                 }
 

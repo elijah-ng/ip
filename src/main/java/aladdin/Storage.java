@@ -24,6 +24,8 @@ public class Storage {
      * @param filePath The path of the storage file.
      */
     public Storage(String filePath) {
+        assert filePath != null : "filePath should not be null";
+
         this.filePath = filePath;
     }
 
@@ -34,6 +36,9 @@ public class Storage {
      * @throws AladdinException If storage file is not found or corrupted.
      */
     public void load(TaskList taskList) throws AladdinException {
+        assert taskList != null : "taskList should not be null";
+        assert this.filePath != null : "filePath should not be null";
+
         File f = new File(this.filePath);
         try {
             Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
@@ -73,6 +78,8 @@ public class Storage {
      * @throws ArrayIndexOutOfBoundsException If storage file is corrupted.
      */
     protected static Task deserialiseTask(String nextLineString) throws ArrayIndexOutOfBoundsException {
+        assert nextLineString != null : "nextLineString should not be null";
+
         String[] nextLineStringArray = nextLineString.split("\\|");
 
         Task newTask = null;
@@ -111,6 +118,9 @@ public class Storage {
      * @throws AladdinException If an error occurs when creating/opening the storage file.
      */
     public void save(TaskList taskList) throws AladdinException {
+        assert taskList != null : "taskList should not be null";
+        assert this.filePath != null : "filePath should not be null";
+
         try {
             Path parentDirectory = Paths.get(this.filePath).getParent();
             if (parentDirectory != null) {
