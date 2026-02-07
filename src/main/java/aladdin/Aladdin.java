@@ -236,7 +236,6 @@ public class Aladdin {
                 // Print taskList
                 this.printTaskList();
                 break;
-
             case "MARK":
                 // Call method to mark task
                 this.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
@@ -244,7 +243,6 @@ public class Aladdin {
                 // Save updated taskList to file
                 this.saveTasksToFile();
                 break;
-
             case "UNMARK":
                 // Call method to unmark task
                 this.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
@@ -252,7 +250,6 @@ public class Aladdin {
                 // Save updated taskList to file
                 this.saveTasksToFile();
                 break;
-
             case "TODO":
                 // Fallthrough
             case "DEADLINE":
@@ -264,7 +261,6 @@ public class Aladdin {
                 // Save updated taskList to file
                 this.saveTasksToFile();
                 break;
-
             case "DELETE":
                 // Call method to delete task
                 this.deleteTask(Integer.parseInt(formattedCommand[1]));
@@ -272,17 +268,14 @@ public class Aladdin {
                 // Save updated taskList to file
                 this.saveTasksToFile();
                 break;
-
             case "FIND":
                 // Call method to find tasks with keyword
                 this.findDescription(formattedCommand[1]);
                 break;
-
             case "BYE":
                 // Print Exit message
                 Ui.printExit();
                 break;
-
             default:
                 // Should never reach default case
                 assert false : "Invalid command should have thrown AladdinException";
@@ -339,7 +332,6 @@ public class Aladdin {
                     // Print taskList
                     chatbot.printTaskList();
                     break;
-
                 case "MARK":
                     // Call method to mark task
                     chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
@@ -347,7 +339,6 @@ public class Aladdin {
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
-
                 case "UNMARK":
                     // Call method to unmark task
                     chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
@@ -355,7 +346,6 @@ public class Aladdin {
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
-
                 case "TODO":
                     // Fallthrough
                 case "DEADLINE":
@@ -367,7 +357,6 @@ public class Aladdin {
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
-
                 case "DELETE":
                     // Call method to delete task
                     chatbot.deleteTask(Integer.parseInt(formattedCommand[1]));
@@ -375,12 +364,10 @@ public class Aladdin {
                     // Save updated taskList to file
                     chatbot.saveTasksToFile();
                     break;
-
                 case "FIND":
                     // Call method to find tasks with keyword
                     chatbot.findDescription(formattedCommand[1]);
                     break;
-
                 default:
                     // Should never reach default case
                     assert false : "Invalid command should have thrown AladdinException";
