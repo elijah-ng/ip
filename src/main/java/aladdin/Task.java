@@ -20,6 +20,15 @@ public abstract class Task {
     }
 
     /**
+     * Returns task's description.
+     *
+     * @return The task description.
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
      * Setter for isDone.
      *
      * @param isDone If Task is done, true. Otherwise, false.

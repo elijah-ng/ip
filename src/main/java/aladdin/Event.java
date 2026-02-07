@@ -26,6 +26,24 @@ public class Event extends Task {
     }
 
     /**
+     * Returns from DateTime
+     *
+     * @return Event's from DateTime
+     */
+    public LocalDateTime getFrom() {
+        return this.from;
+    }
+
+    /**
+     * Returns to DateTime
+     *
+     * @return Event's to DateTime
+     */
+    public LocalDateTime getTo() {
+        return this.to;
+    }
+
+    /**
      * Returns a string representation of a serialised Event task for storage.
      *
      * @return A string representing the serialised Event task.
@@ -34,6 +52,17 @@ public class Event extends Task {
     public String serialise() {
         return "E|" + (this.isDone ? "1" : "0") + "|" + this.description + "|"
                 + this.from.format(Aladdin.DATE_TIME_STORE) + "|" + this.to.format(Aladdin.DATE_TIME_STORE);
+    }
+
+    /**
+     * Returns a string with description, from and to LocalDateTime of an Event.
+     *
+     * @return A compact string representation of the Event.
+     */
+    public String toDescriptionFromToString() {
+        return super.getDescription() + " | "
+                + this.from.format(Aladdin.DATE_TIME_DISPLAY) + " | "
+                + this.to.format(Aladdin.DATE_TIME_DISPLAY);
     }
 
     /**

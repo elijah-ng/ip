@@ -174,6 +174,17 @@ public class Aladdin {
         Ui.printMessageWithObject("Here are the matching tasks in your list:", matchingTasks);
     }
 
+    private void findFreeTimes(String[] formattedTask) {
+        assert formattedTask != null : "formattedTask should not be null";
+
+        LocalDateTime start = LocalDateTime.parse(formattedTask[1], DATE_TIME_STORE);
+        LocalDateTime end = LocalDateTime.parse(formattedTask[2], DATE_TIME_STORE);
+
+        Ui.printMessageWithObject("Here are the free times that do not clash with existing events between "
+                + start.format(Aladdin.DATE_TIME_DISPLAY) + " and " + end.format(Aladdin.DATE_TIME_DISPLAY) + ":",
+                this.taskList.findFreeSlots(start, end));
+    }
+
     /**
      * Starts Aladdin chatbot by loading tasks from file and printing welcome message.
      *
@@ -272,6 +283,10 @@ public class Aladdin {
                 // Call method to find tasks with keyword
                 this.findDescription(formattedCommand[1]);
                 break;
+            case "FREE":
+                // Call method to find free times
+                this.findFreeTimes(formattedCommand);
+                break;
             case "BYE":
                 // Print Exit message
                 Ui.printExit();
@@ -367,6 +382,10 @@ public class Aladdin {
                 case "FIND":
                     // Call method to find tasks with keyword
                     chatbot.findDescription(formattedCommand[1]);
+                    break;
+                case "FREE":
+                    // Call method to find free times
+                    chatbot.findFreeTimes(formattedCommand);
                     break;
                 default:
                     // Should never reach default case
