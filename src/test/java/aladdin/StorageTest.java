@@ -67,23 +67,23 @@ public class StorageTest {
 
     @Test
     public void deserialiseTask_invalidTodo_exceptionThrown() {
-        assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> Storage.deserialiseTask("T|0")
-        );
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Storage.deserialiseTask("T|0");
+        });
     }
 
     @Test
     public void deserialiseTask_invalidDeadline_exceptionThrown() {
-        assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> Storage.deserialiseTask("D|0|deadline task")
-        );
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Storage.deserialiseTask("D|0|deadline task");
+        });
     }
 
     @Test
     public void deserialiseTask_invalidEvent_exceptionThrown() {
-        assertThrows(ArrayIndexOutOfBoundsException.class,
-                () -> Storage.deserialiseTask("E|1|event task|6-8-2026 1400")
-        );
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            Storage.deserialiseTask("E|1|event task|6-8-2026 1400");
+        });
     }
 
 }
