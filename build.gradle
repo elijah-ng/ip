@@ -45,11 +45,11 @@ test {
 }
 
 application {
-    mainClass.set("aladdin.Launcher") // changed from seedu.duke.Duke, aladdin.Aladdin
+    mainClass.set("aladdin.Launcher")
 }
 
 shadowJar {
-    archiveBaseName = "aladdin" // changed from duke
+    archiveBaseName = "aladdin"
     archiveVersion = "v0.2" // or specify FileName
     archiveClassifier = null
 }
@@ -58,7 +58,7 @@ run{
     standardInput = System.in
 }
 
-// Added
+// Added Checkstyle
 checkstyle {
     toolVersion = '11.0.0'
 }
