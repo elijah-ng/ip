@@ -1,6 +1,11 @@
 package aladdin;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a list of tasks.
@@ -114,6 +119,66 @@ public class TaskList {
 
         }
         return matchingTaskListString.toString();
+    }
+
+    /**
+     * Searches free slots that do not clash with on existing Event tasks.
+     *
+     * @param start Start Date/Time to search for free slots.
+     * @param end End Date/Time to search for free slots.
+     * @return A string representing the free slots.
+     */
+    public String findFreeSlots(LocalDateTime start, LocalDateTime end) {
+        assert start != null : "start should not be null";
+        assert end != null : "end should not be null";
+
+        // Extract Event tasks coinciding between start and end (exclusive) from taskList
+        List<Event> currentEvents = this.tasks.stream()
+                .filter(Event.class::isInstance)
+                .map(Event.class::cast)
+                .filter((Event event) -> event.getFrom().isBefore(end) && event.getTo().isAfter(start))
+                .collect(Collectors.toList());
+        // Sort currentEvents by "from" then "to".
+        Collections.sort(currentEvents, Comparator.comparing(Event::getFrom).thenComparing(Event::getTo));
+
+        List<Event> freeSlots = new ArrayList<>();
+        LocalDateTime current = start;
+        int freeSlotNumber = 1;
+
+        for (Event busyEvent : currentEvents) {
+            LocalDateTime busyEventStart = busyEvent.getFrom();
+            LocalDateTime busyEventEnd = busyEvent.getTo();
+
+            if (busyEventStart.isAfter(current)) { // Free slot is found
+                freeSlots.add(new Event("Slot " + freeSlotNumber, current, busyEventStart));
+                freeSlotNumber += 1;
+            }
+            // Move current to be max(current, busyEventEnd)
+            current = current.isAfter(busyEventEnd) ? current : busyEventEnd;
+        }
+
+        if (current.isBefore(end)) { // Check for free slot before end
+            freeSlots.add(new Event("Slot " + freeSlotNumber, current, end));
+        }
+
+        return freeSlotsToString(freeSlots);
+    }
+
+    // Helper method to convert freeSlots to String representation.
+    private String freeSlotsToString(List<Event> freeSlots) {
+        // Create String representation of free slots to return
+        StringBuilder freeSlotsString = new StringBuilder();
+
+        for (int i = 0; i < freeSlots.size(); i++) {
+            freeSlotsString.append(freeSlots.get(i).toDescriptionFromToString());
+
+            // Add new line if not last item
+            if (i < freeSlots.size() - 1) {
+                freeSlotsString.append(System.lineSeparator());
+            }
+        }
+
+        return freeSlotsString.toString();
     }
 
     /**

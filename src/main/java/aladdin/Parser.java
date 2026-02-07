@@ -11,7 +11,7 @@ public class Parser {
     /**
      * Enumeration for Commands
      */
-    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE }
+    private enum Command { LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE, FREE }
 
     /**
      * Returns the formatted user command as an array of substrings.
@@ -64,6 +64,9 @@ public class Parser {
                 break;
             case FIND:
                 formattedUserCommand = Parser.formatFind(userInputArray[1]);
+                break;
+            case FREE:
+                formattedUserCommand = Parser.formatFindFreeTimes(userInputArray[1]);
                 break;
             default:
                 // Do nothing. Should never reach default case
@@ -254,4 +257,44 @@ public class Parser {
         return formattedFindCommand;
     }
 
+    private static String[] formatFindFreeTimes(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
+        String[] formattedFreeCommand = new String[3];
+        formattedFreeCommand[0] = "FREE";
+
+        String freeFormatError = "Invalid find free times format. "
+                + "Please specify /from {date/time} /to {date/time}.";
+
+        String[] emptyStringAndDates = commandDescription.split("/from ", 2);
+        // Throw exception if "/from" not present or there are characters/whitespaces are before it
+        if (emptyStringAndDates.length != 2 || !emptyStringAndDates[0].isEmpty()) {
+            throw new AladdinException(freeFormatError);
+        }
+
+        String[] fromAndTo = emptyStringAndDates[1].split(" /to ", 2);
+        if (fromAndTo.length != 2) {
+            throw new AladdinException(freeFormatError);
+        }
+
+        try {
+            LocalDateTime fromDate = LocalDateTime.parse(fromAndTo[0], Aladdin.DATE_TIME_STORE);
+            LocalDateTime toDate = LocalDateTime.parse(fromAndTo[1], Aladdin.DATE_TIME_STORE);
+
+            // If fromDate is not before toDate (fromDate equal or after toDate)
+            if (!fromDate.isBefore(toDate)) {
+                throw new AladdinException("Free 'from' must be before 'to' Date/Time.");
+            }
+
+            formattedFreeCommand[1] = fromDate.format(Aladdin.DATE_TIME_STORE);
+            formattedFreeCommand[2] = toDate.format(Aladdin.DATE_TIME_STORE);
+
+        } catch (DateTimeParseException e) {
+            throw new AladdinException("Invalid free 'from' and/or 'to' Date. "
+                    + "Please enter in d-M-yyyy HHmm format." + System.lineSeparator()
+                    + e.getMessage());
+        }
+
+        return formattedFreeCommand;
+    }
 }
