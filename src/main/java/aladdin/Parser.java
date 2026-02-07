@@ -21,6 +21,8 @@ public class Parser {
      * @throws AladdinException If user command is invalid.
      */
     public static String[] parseUserCommand(String userInput) throws AladdinException {
+        assert userInput != null : "userInput should not be null";
+
         String[] userInputArray = userInput.split(" ", 2);
 
         try {
@@ -96,6 +98,8 @@ public class Parser {
     }
 
     private static String[] formatMark(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedMarkCommand = new String[2];
         formattedMarkCommand[0] = "MARK";
 
@@ -111,6 +115,8 @@ public class Parser {
     }
 
     private static String[] formatUnmark(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedUnmarkCommand = new String[2];
         formattedUnmarkCommand[0] = "UNMARK";
 
@@ -126,6 +132,8 @@ public class Parser {
     }
 
     private static String[] formatDelete(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedDeleteCommand = new String[2];
         formattedDeleteCommand[0] = "DELETE";
 
@@ -141,6 +149,8 @@ public class Parser {
     }
 
     private static String[] formatTodo(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedTodoCommand = new String[2];
         formattedTodoCommand[0] = "TODO";
 
@@ -159,6 +169,8 @@ public class Parser {
     }
 
     private static String[] formatDeadline(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedDeadlineCommand = new String[3];
         formattedDeadlineCommand[0] = "DEADLINE";
 
@@ -193,6 +205,8 @@ public class Parser {
     }
 
     private static String[] formatEvent(String commandDescription) throws AladdinException {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedEventCommand = new String[4];
         formattedEventCommand[0] = "EVENT";
 
@@ -242,6 +256,8 @@ public class Parser {
     }
 
     private static String[] formatFind(String commandDescription) {
+        assert commandDescription != null : "commandDescription should not be null";
+
         String[] formattedFindCommand = new String[2];
         formattedFindCommand[0] = "FIND";
         formattedFindCommand[1] = commandDescription;
