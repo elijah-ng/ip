@@ -95,6 +95,8 @@ public class TaskList {
      * @return A String representing the tasks with keyword found in the task description.
      */
     public String searchTasks(String keyword) {
+        assert keyword != null : "keyword should not be null";
+
         StringBuilder matchingTaskListString = new StringBuilder();
         String separator = "";
 
