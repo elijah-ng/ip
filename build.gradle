@@ -50,7 +50,7 @@ application {
 
 shadowJar {
     archiveBaseName = "aladdin" // changed from duke
-    archiveVersion = "v0.1" // or specify FileName
+    archiveVersion = "v0.2" // or specify FileName
     archiveClassifier = null
 }
 
