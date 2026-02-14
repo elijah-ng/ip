@@ -29,7 +29,7 @@ public class Ui {
         // Print greeting message
         System.out.println(LINE_SEP);
         System.out.println("Hello! I am " + name + "!");
-        System.out.println("What can I do for you?");
+        System.out.println("What can I magically do for you?");
         System.out.println(LINE_SEP);
     }
 
@@ -39,7 +39,7 @@ public class Ui {
     public static void printExit() {
         // Print exit message
         System.out.println(LINE_SEP);
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println("Bye. We shall meet again soon!");
         System.out.println(LINE_SEP);
     }
 
