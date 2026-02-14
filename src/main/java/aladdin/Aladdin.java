@@ -79,7 +79,7 @@ public class Aladdin {
      * Adds the user's task to list.
      *
      * @param formattedTask Array of substrings of correctly formatted task properties.
-     * @throws AladdinException if task type is invalid.
+     * @throws AladdinException If task type is invalid.
      */
     private void addTask(String[] formattedTask) throws AladdinException {
         assert formattedTask != null : "formattedTask should not be null";
@@ -109,7 +109,7 @@ public class Aladdin {
         // Add the new task
         this.taskList.addToTaskList(newTask);
 
-        Ui.printMessageWithObject("Got it. Task has been Added:", newTask,
+        Ui.printMessageWithObject("Got it. Task has magically been added:", newTask,
                 "Now you have " + this.taskList.getSize() + " task(s) in the list.");
     }
 
@@ -146,7 +146,7 @@ public class Aladdin {
         Task deletedTask = this.taskList.deleteTask(taskNumber);
 
         if (deletedTask != null) {
-            Ui.printMessageWithObject("Noted. I have removed this task:", deletedTask,
+            Ui.printMessageWithObject("Abracadabra! I have removed the task:", deletedTask,
                     "Now you have " + this.taskList.getSize() + " task(s) in the list.");
 
         } else {
@@ -158,7 +158,7 @@ public class Aladdin {
      * Prints the chatbot's taskList.
      */
     private void printTaskList() {
-        Ui.printMessageWithObject("Here are the tasks in your list:", this.taskList);
+        Ui.printMessageWithObject("Abracadabra! Here are the tasks in your list:", this.taskList);
     }
 
     /**
@@ -171,16 +171,21 @@ public class Aladdin {
 
         String matchingTasks = this.taskList.searchTasks(keyword);
 
-        Ui.printMessageWithObject("Here are the matching tasks in your list:", matchingTasks);
+        Ui.printMessageWithObject("Abracadabra! Here are the matching tasks in your list:", matchingTasks);
     }
 
+    /**
+     * Finds free time slots within the specified date & time ranges.
+     *
+     * @param formattedTask Array of substrings of correctly formatted start and end (date & time).
+     */
     private void findFreeTimes(String[] formattedTask) {
         assert formattedTask != null : "formattedTask should not be null";
 
         LocalDateTime start = LocalDateTime.parse(formattedTask[1], DATE_TIME_STORE);
         LocalDateTime end = LocalDateTime.parse(formattedTask[2], DATE_TIME_STORE);
 
-        Ui.printMessageWithObject("Here are the free times that do not clash with existing events between "
+        Ui.printMessageWithObject("Abracadabra! Here are the free times that do not clash with existing events between "
                 + start.format(Aladdin.DATE_TIME_DISPLAY) + " and " + end.format(Aladdin.DATE_TIME_DISPLAY) + ":",
                 this.taskList.findFreeSlots(start, end));
     }
