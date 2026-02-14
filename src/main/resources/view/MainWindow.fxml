@@ -6,12 +6,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
+<!-- Solution below to format GUI style adapted from Claude AI -->
+
+<!-- fx:controller. Sets controller. Include package name -->
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="aladdin.MainWindow"> <!-- Sets controller. Include package name -->
+            fx:controller="aladdin.MainWindow"
+            style="-fx-background-image: url('/images/DaBackground.png');
+                          -fx-background-size: cover;
+                          -fx-background-position: 50% 50%;
+                          -fx-background-repeat: no-repeat;" >
     <children>
         <TextField fx:id="userInput"
                    layoutY="558.0"
@@ -32,11 +39,13 @@
                     hvalue="1.0"
                     prefHeight="557.0"
                     prefWidth="400.0"
-                    vvalue="1.0">
+                    vvalue="1.0"
+                    style="-fx-background-color: transparent;" >
             <content>
                 <VBox fx:id="dialogContainer"
                       prefHeight="552.0"
-                      prefWidth="388.0" />
+                      prefWidth="388.0"
+                      style="-fx-background-color: transparent;" />
             </content>
         </ScrollPane>
     </children>

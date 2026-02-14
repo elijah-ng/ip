@@ -23,6 +23,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setAladdin(aladdin); // inject the Aladdin instance
+            stage.setTitle("Aladdin Chatbot");
 
             stage.show();
         } catch (IOException e) {
