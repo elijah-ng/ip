@@ -35,6 +35,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        // Solution below to format GUI adapted from Claude AI
+        Platform.runLater(() -> scrollPane.lookup(".viewport")
+                .setStyle("-fx-background-color: transparent;"));
     }
 
     /** Injects the Aladdin instance. */
