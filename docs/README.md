@@ -18,11 +18,8 @@ All you will need to do is the following:
 
 **MOST** importantly, it is **ABSOLUTELY FREE** forever!
 
-> [!NOTE]
-> Aladdin automatically saves your task list into a local storage file, do not edit it yourself.
-
 # Features
-> [:information_source:] **Command Format:**
+> **Command Format:**
 > * Extra parameters for commands that do not take in parameters (i.e. `list`, `bye`) are ignored.
 > * The first part of the command (e.g. `list`, `todo`) is case-insensitive.
 
@@ -134,10 +131,12 @@ Aladdin chatbot automatically saves your tasks to a file for archive after any t
 
 Aladdin will remember your tasks from a previous session (if any) when you use the chatbot again.
 
-### User Guide Credits
+> **Caution:** Do not edit the saved file yourself, as it may lead to corruption.
+
+## User Guide Credits
 * User Guide format inspired by https://se-education.org/addressbook-level3/UserGuide.html
 
-### Image Credits
+## Image Credits
 * https://www.vhv.rs/viewpic/iTRixoJ_winnie-the-pooh-clipart-high-resolution-transparent-background/
 * https://www.nicepng.com/ourpic/u2q8i1r5a9y3y3e6_aladdin-and-abu-aladdin-and-abu-png/#google_vignette
 * https://www.canva.com/templates/EAGnYt64Sg8-elegant-minimalist-background-gold-and-beige-instagram-post/
