@@ -39,16 +39,16 @@ public class Storage {
         assert taskList != null : "taskList should not be null";
         assert this.filePath != null : "filePath should not be null";
 
-        File f = new File(this.filePath);
+        File storageFile = new File(this.filePath);
         try {
-            Scanner s = new Scanner(f); // FileNotFoundException if directory or file does not exist
+            Scanner scanner = new Scanner(storageFile); // FileNotFoundException if directory or file does not exist
             Ui.printMessage("File containing saved tasks found!" + System.lineSeparator()
-                    + "Loading tasks from: " + f.getAbsolutePath());
+                    + "Loading tasks from: " + storageFile.getAbsolutePath());
 
             // while file contains non-whitespace character
-            while (s.hasNext()) {
+            while (scanner.hasNext()) {
                 // Parse next line
-                String nextLineString = s.nextLine();
+                String nextLineString = scanner.nextLine();
                 Task newTask = Storage.deserialiseTask(nextLineString);
 
                 // Add to taskList
