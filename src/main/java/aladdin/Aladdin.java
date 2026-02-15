@@ -233,14 +233,11 @@ public class Aladdin {
 
         // Solution below inspired by
         // https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
-
         // Create stream to store command line output
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(outputStream);
-
         // Save System.out
         PrintStream oldStream = System.out;
-
         // Set output to printStream
         System.setOut(printStream);
 
@@ -249,52 +246,36 @@ public class Aladdin {
 
             switch (formattedCommand[0]) {
             case "LIST":
-                // Print taskList
                 this.printTaskList();
                 break;
             case "MARK":
-                // Call method to mark task
-                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
-
-                // Save updated taskList to file
-                this.saveTasksToFile();
+                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), true); // Mark task
+                this.saveTasksToFile(); // Save updated taskList to file
                 break;
             case "UNMARK":
-                // Call method to unmark task
-                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
-
-                // Save updated taskList to file
-                this.saveTasksToFile();
+                this.markTaskStatus(Integer.parseInt(formattedCommand[1]), false); // Unmark task
+                this.saveTasksToFile(); // Save updated taskList to file
                 break;
             case "TODO":
                 // Fallthrough
             case "DEADLINE":
                 // Fallthrough
             case "EVENT":
-                // Add task to taskList
-                this.addTask(formattedCommand);
-
-                // Save updated taskList to file
-                this.saveTasksToFile();
+                this.addTask(formattedCommand); // Add task to taskList
+                this.saveTasksToFile(); // Save updated taskList to file
                 break;
             case "DELETE":
-                // Call method to delete task
-                this.deleteTask(Integer.parseInt(formattedCommand[1]));
-
-                // Save updated taskList to file
-                this.saveTasksToFile();
+                this.deleteTask(Integer.parseInt(formattedCommand[1])); // Delete task from taskList
+                this.saveTasksToFile(); // Save updated taskList to file
                 break;
             case "FIND":
-                // Call method to find tasks with keyword
-                this.findDescription(formattedCommand[1]);
+                this.findDescription(formattedCommand[1]); // Find tasks with keyword
                 break;
             case "FREE":
-                // Call method to find free times
-                this.findFreeTimes(formattedCommand);
+                this.findFreeTimes(formattedCommand); // Find free times within specified period
                 break;
             case "BYE":
-                // Print Exit message
-                Ui.printExit();
+                Ui.printExit(); // Print Exit message
                 break;
             default:
                 // Should never reach default case
@@ -312,99 +293,6 @@ public class Aladdin {
         }
         // Returns text printed to System.out
         return outputStream.toString();
-    }
-
-    /**
-     * Main method to initialise and run Aladdin chatbot.
-     * This method is maintained to allow option for Text-based UI.
-     *
-     * @param args Supplied command-line arguments (if any).
-     */
-    public static void main(String[] args) {
-
-        // Instantiate Aladdin chatbot
-        String name = "Aladdin";
-        Aladdin chatbot = new Aladdin(name);
-        chatbot.loadTasksFromFile();
-
-        // Print welcome message
-        Ui.printWelcome(name);
-
-        while (true) {
-            // Get user input
-            String userInput = Ui.getUserInput();
-
-            if (userInput == null) {
-                // Return if there is no user input
-                // Required for automated text UI test
-                return;
-
-            } else if (userInput.equalsIgnoreCase("bye")) {
-                // Break when user enters command "bye"
-                break;
-            }
-
-            try {
-                String[] formattedCommand = Parser.parseUserCommand(userInput);
-
-                switch (formattedCommand[0]) {
-                case "LIST":
-                    // Print taskList
-                    chatbot.printTaskList();
-                    break;
-                case "MARK":
-                    // Call method to mark task
-                    chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), true);
-
-                    // Save updated taskList to file
-                    chatbot.saveTasksToFile();
-                    break;
-                case "UNMARK":
-                    // Call method to unmark task
-                    chatbot.markTaskStatus(Integer.parseInt(formattedCommand[1]), false);
-
-                    // Save updated taskList to file
-                    chatbot.saveTasksToFile();
-                    break;
-                case "TODO":
-                    // Fallthrough
-                case "DEADLINE":
-                    // Fallthrough
-                case "EVENT":
-                    // Add task to taskList
-                    chatbot.addTask(formattedCommand);
-
-                    // Save updated taskList to file
-                    chatbot.saveTasksToFile();
-                    break;
-                case "DELETE":
-                    // Call method to delete task
-                    chatbot.deleteTask(Integer.parseInt(formattedCommand[1]));
-
-                    // Save updated taskList to file
-                    chatbot.saveTasksToFile();
-                    break;
-                case "FIND":
-                    // Call method to find tasks with keyword
-                    chatbot.findDescription(formattedCommand[1]);
-                    break;
-                case "FREE":
-                    // Call method to find free times
-                    chatbot.findFreeTimes(formattedCommand);
-                    break;
-                default:
-                    // Should never reach default case
-                    assert false : "Invalid command should have thrown AladdinException";
-                    break;
-                }
-
-            } catch (AladdinException e) {
-                Ui.printException(e);
-            }
-        }
-
-        // Print Exit message
-        Ui.printExit();
     }
 
 }
