@@ -436,4 +436,189 @@ public class ParserTest {
         }
     }
 
+    @Test
+    public void parseUserCommand_validFree_success() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 0000 /to 1-1-2026 2359");
+            assertEquals("FREE", formattedCommand[0]);
+            assertEquals("1-1-2026 0000", formattedCommand[1]);
+            assertEquals("1-1-2026 2359", formattedCommand[2]);
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDesc_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free  /from 1-1-2026 0000 /to 1-1-2026 2359");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid find free times format. "
+                    + "Please specify /from {date/time} /to {date/time}.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDesc2_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free hi /from 1-1-2026 0000 /to 1-1-2026 2359");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid find free times format. "
+                    + "Please specify /from {date/time} /to {date/time}.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDesc3_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free  ");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid find free times format. "
+                    + "Please specify /from {date/time} /to {date/time}.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDesc4_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free /from 1-1-2026 0000");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid find free times format. "
+                    + "Please specify /from {date/time} /to {date/time}.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDesc5_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free /to 1-1-2026 2359");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid find free times format. "
+                    + "Please specify /from {date/time} /to {date/time}.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDateRange_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 2359 /to 1-1-2026 0000");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Free 'from' must be before 'to' Date/Time.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeDateRange2_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 1200 /to 1-1-2026 1200");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Free 'from' must be before 'to' Date/Time.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeFromDate_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser.parseUserCommand("free /from tmr /to tmr");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                    + System.lineSeparator() + "Text 'tmr' could not be parsed at index 0", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeFromDate2_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 1460 /to 1-1-2026 1600");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                            + System.lineSeparator()
+                            + "Text '1-1-2026 1460' could not be parsed: "
+                            + "Invalid value for MinuteOfHour (valid values 0 - 59): 60",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeFromDate3_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-12026 1400 /to 1-1-2026 1600");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                            + System.lineSeparator()
+                            + "Text '1-12026 1400' could not be parsed at index 7",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeToDate_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 1400 /to tmr");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                    + System.lineSeparator() + "Text 'tmr' could not be parsed at index 0", e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeToDate2_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 1400 /to 1-1-2026 1660");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                            + System.lineSeparator()
+                            + "Text '1-1-2026 1660' could not be parsed: "
+                            + "Invalid value for MinuteOfHour (valid values 0 - 59): 60",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseUserCommand_invalidFreeToDate3_exceptionThrown() {
+        try {
+            String[] formattedCommand = Parser
+                    .parseUserCommand("free /from 1-1-2026 1400 /to 1-12026 1600");
+            fail();
+
+        } catch (AladdinException e) {
+            assertEquals("Invalid free 'from' and/or 'to' Date. Please enter in d-M-yyyy HHmm format."
+                            + System.lineSeparator()
+                            + "Text '1-12026 1600' could not be parsed at index 7",
+                    e.getMessage());
+        }
+    }
+
 }
