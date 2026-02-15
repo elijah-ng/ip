@@ -132,19 +132,20 @@ public class TaskList {
         assert start != null : "start should not be null";
         assert end != null : "end should not be null";
 
-        // Extract Event tasks coinciding between start and end (exclusive) from taskList
+        // Extract relevant Event tasks coinciding between start and end (exclusive) from taskList
         List<Event> currentEvents = this.tasks.stream()
                 .filter(Event.class::isInstance)
                 .map(Event.class::cast)
                 .filter((Event event) -> event.getFrom().isBefore(end) && event.getTo().isAfter(start))
                 .collect(Collectors.toList());
-        // Sort currentEvents by "from" then "to".
+        // Sort currentEvents by "from" then "to"
         Collections.sort(currentEvents, Comparator.comparing(Event::getFrom).thenComparing(Event::getTo));
 
         List<Event> freeSlots = new ArrayList<>();
         LocalDateTime current = start;
         int freeSlotNumber = 1;
 
+        // Check for free slots after start, but before the end of last busy event
         for (Event busyEvent : currentEvents) {
             LocalDateTime busyEventStart = busyEvent.getFrom();
             LocalDateTime busyEventEnd = busyEvent.getTo();
@@ -153,6 +154,8 @@ public class TaskList {
                 freeSlots.add(new Event("Slot " + freeSlotNumber, current, busyEventStart));
                 freeSlotNumber += 1;
             }
+            // Handles situation where a current busy event's schedule is completely/partially
+            // overlapping with a previous busy event's schedule.
             // Move current to be max(current, busyEventEnd)
             current = current.isAfter(busyEventEnd) ? current : busyEventEnd;
         }
