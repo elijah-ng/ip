@@ -132,7 +132,8 @@ public class TaskList {
         assert start != null : "start should not be null";
         assert end != null : "end should not be null";
 
-        // Extract relevant Event tasks coinciding between start and end (exclusive) from taskList
+        // Solution below inspired by Claude AI
+        // Filter relevant Event tasks coinciding between start and end (exclusive) from taskList
         List<Event> currentEvents = this.tasks.stream()
                 .filter(Event.class::isInstance)
                 .map(Event.class::cast)
