@@ -50,12 +50,13 @@ application {
 
 shadowJar {
     archiveBaseName = "aladdin"
-    archiveVersion = "v0.2" // or specify FileName
+    archiveVersion = "v0.3" // or specify FileName
     archiveClassifier = null
 }
 
 run{
     standardInput = System.in
+    // Note: Java assertion disabled by default. To enable, use enableAssertions = true
 }
 
 // Added Checkstyle
